@@ -28,13 +28,6 @@ def reset(orchestrator_connection: OrchestratorConnection) -> None:
 def clean_up(orchestrator_connection: OrchestratorConnection) -> None:
     """Do any cleanup needed to leave a blank slate."""
     orchestrator_connection.log_trace("Doing cleanup.")
-    
-    subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    subprocess.call("taskkill /F /IM chrome.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    subprocess.call("taskkill /F /IM chromedriver.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    subprocess.call("taskkill /F /IM saplogon.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    subprocess.call("taskkill /F /IM sapgui.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 
 def close_all(orchestrator_connection: OrchestratorConnection) -> None:
@@ -46,6 +39,12 @@ def kill_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Forcefully close all applications used by the robot."""
     orchestrator_connection.log_trace("Killing all applications.")
 
+    subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM chrome.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM chromedriver.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM saplogon.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM sapgui.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Open all programs used by the robot."""
@@ -89,7 +88,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
     #aktuel_bogholderbakke = "Kombit Fakturaer"
     #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
     #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #aktuel_type = "ikkKY"
     
