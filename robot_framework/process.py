@@ -345,11 +345,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").setFocus
         obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").caretPosition = 10
         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Her slettes bilaget
-        obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton "EREF"
         sbar = obj_sess.findById("wnd[0]/sbar")
         print("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
         orchestrator_connection.log_trace("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-    
+        obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
+        print("sldfjds")
     if queue_element.queue_name=="Bogholderbakke_XML":
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
         #tree = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR")
