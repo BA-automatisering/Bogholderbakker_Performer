@@ -1,5 +1,6 @@
 """This module handles resetting the state of the computer so the robot can work with a clean slate."""
 
+import subprocess
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 
 import os
