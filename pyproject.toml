@@ -18,15 +18,15 @@ classifiers = [
 dependencies = [
     "OpenOrchestrator == 2.*",
     "Pillow == 10.*",
+    "Selenium == 4.38.0",
+    "PyAutoGUI == 0.9.54",
+    "pywin32 == 311",
+    "openpyxl",
+    "pywinauto"
 ]
 
 [project.optional-dependencies]
 dev = [
   "pylint",
-  "flake8",
-  "selenium == 4.38.0",
-  "PyAutoGUI == 0.9.54",
-  "pywin32 == 311",
-  "openpyxl",
-  "pywinauto"
+  "flake8"
 ]
