@@ -63,8 +63,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         # Return None and break
                         return
 
-    # Assign variables from SpecificContent
     specific_content = json.loads(queue_element.data)
+    # Assign variables from SpecificContent
     invoiceNo = specific_content.get("invoiceNo", None)
     title = specific_content.get("title", None)
     eanNr = specific_content.get("eanNr", None)
