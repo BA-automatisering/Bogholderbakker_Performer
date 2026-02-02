@@ -390,6 +390,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'EAN':EAN})
             
         print("stop her")
+        
     if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
         print(queue_element.queue_name) 
         time.sleep(20)

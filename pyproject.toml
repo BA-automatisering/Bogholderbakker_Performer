@@ -23,5 +23,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "pylint",
-  "flake8"
+  "flake8",
+  "Selenium == 4.38.0",
+  "PyAutoGUI == 0.9.54",
+  "pywin32 == 311",
+  "openpyxl",
+  "pywinauto"
 ]
