@@ -222,6 +222,5 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     goto_bogholderbakker_i_SAP()
     go_to_specific_bakke()
     
+    orchestrator_connection.log_trace("Opening all applications - end")
     
-    
-    print("End reset")
