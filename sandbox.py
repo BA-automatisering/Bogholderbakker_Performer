@@ -8,7 +8,9 @@ from OpenOrchestrator.orchestrator_connection.connection import (
 )
  
 from robot_framework.process import process
-
+from robot_framework import queue_framework
+from robot_framework import initialize
+from robot_framework import reset
 
 orchestrator_connection = OrchestratorConnection(
     "Bogholderbakker_Performer",
@@ -21,10 +23,25 @@ orchestrator_connection = OrchestratorConnection(
 
 print("sandbox started...okay")
 
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_HåndterAfvist')
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
 #specific_content = json.loads(queue_element.data)
 #queue_framework.main()
 #__main__()
 
+reset.open_all(orchestrator_connection)
 process(orchestrator_connection, queue_element)
- 
+
+
+
+
+"""
+# -----------------------------------
+import subprocess
+
+subprocess.run(["python", "-m", "robot_framework", "pn", "cs", "ck", "args", "trigger_id"])
+
+# uv venv
+# .venv\Scripts\activate
+# uv pip install -e .
+
+"""
