@@ -29,12 +29,12 @@ def clean_up(orchestrator_connection: OrchestratorConnection) -> None:
     """Do any cleanup needed to leave a blank slate."""
     orchestrator_connection.log_trace("Doing cleanup.")
     
-    #subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    #subprocess.call("taskkill /F /IM chrome.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    #subprocess.call("taskkill /F /IM chromedriver.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    #subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    #subprocess.call("taskkill /F /IM saplogon.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-    #subprocess.call("taskkill /F /IM sapgui.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM chrome.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM chromedriver.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM saplogon.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+    subprocess.call("taskkill /F /IM sapgui.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
 
 def close_all(orchestrator_connection: OrchestratorConnection) -> None:
@@ -81,7 +81,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges disse 2 linjer
-    #aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
     #aktuel_type = json.loads(orchestrator_connection.process_arguments)['aktuel_type']
     
     #Ved TEST lokalt bruges nedenstående parametre...
@@ -89,7 +89,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
     #aktuel_bogholderbakke = "Kombit Fakturaer"
     #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-    aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
     #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #aktuel_type = "ikkKY"
     

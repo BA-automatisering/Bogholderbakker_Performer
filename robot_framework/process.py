@@ -301,14 +301,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
 
     # Assign variables from SpecificContent
     specific_content = json.loads(queue_element.data)
-    #Null beløb
     invoiceNo = specific_content.get("invoiceNo", None)
     title = specific_content.get("title", None)
     eanNr = specific_content.get("eanNr", None)
     fakturabeløb = specific_content.get("fakturabeløb", None)
     leverandør = specific_content.get("leverandør", None)
     
-    orchestrator_connection.log_trace(title)
+    orchestrator_connection.log_trace("New: "+title)
     
     obj_sess = get_client()
     
@@ -348,8 +347,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         sbar = obj_sess.findById("wnd[0]/sbar")
         print("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
         orchestrator_connection.log_trace("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+        time.sleep(2)
         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
-        print("sldfjds")
+        time.sleep(2)
     if queue_element.queue_name=="Bogholderbakke_XML":
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
         #tree = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR")
