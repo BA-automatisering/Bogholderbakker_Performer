@@ -155,7 +155,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
 
     def go_to_specific_bakke():
-        orchestrator_connection.log_trace("go_to_specifik_bakkke_and_read_xlsx started...")
+        orchestrator_connection.log_trace("go_to_specifik_bakkke started...")
         obj_sess = get_client()
         
         tree = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell")

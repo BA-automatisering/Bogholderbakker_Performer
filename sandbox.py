@@ -23,12 +23,15 @@ orchestrator_connection = OrchestratorConnection(
 
 print("sandbox started...okay")
 
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_NulBeløb')
+
 #specific_content = json.loads(queue_element.data)
 #queue_framework.main()
 #__main__()
 
 reset.open_all(orchestrator_connection)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
+process(orchestrator_connection, queue_element)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
 process(orchestrator_connection, queue_element)
 
 

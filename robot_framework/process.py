@@ -28,6 +28,8 @@ import win32gui
 import win32con
 import win32api
 
+from collections import Counter
+
 n = 0
 
 # pylint: disable-next=unused-argument
@@ -72,6 +74,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     leverandør = specific_content.get("leverandør", None)
     
     orchestrator_connection.log_trace("New: "+title)
+    print("New: "+title)
     
     obj_sess = get_client()
     
@@ -87,10 +90,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         nr += 1
     id = next((p for p in data if p["title"].lower() == title.lower()), None)
     nr2 = id["no"]
-   
+    
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
+    #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
+    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
+    
+    #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[4]").select() #Vis forkert...
+    #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").doubleClickCurrentCell
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for Haandter afvist åbnes WebViev
     
     #tree = obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell")
@@ -113,16 +121,30 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         orchestrator_connection.log_trace("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
         time.sleep(2)
         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
-        time.sleep(2)
+        #time.sleep(2)
+    
     if queue_element.queue_name=="Bogholderbakke_XML":
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
+        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select()
+        i = 1
+        while i < 9:
+            sbar = obj_sess.findById("wnd[0]/sbar")
+            print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+            pyautogui.press('enter')
+            time.sleep(2)
+            if i == 9:
+                break
+            i += 1
+        print("stop")
         #tree = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR")
         #print("Type:", tree.Type) #Type: GuiTextField
         #print("Id:", tree.Id)
     
     
     if queue_element.queue_name=="Bogholderbakke_DobbeltFaktura":
+        obj_sess = get_client()
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
+        #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press()
         obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").pressToolbarContextButton("&MB_EXPORT")
         obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").selectContextMenuItem("&XXL")
         obj_sess.findById("wnd[1]/usr/ctxtDY_PATH").text = "C:\\tmp\\"
@@ -153,8 +175,46 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'Regnskabsaar':Regnskabsaar, 
                 'Bilagsdato':Bilagsdato, 
                 'EAN':EAN})
+        
+        resultat = Counter(d["FakNo"] for d in tmp)
+        print(resultat)
+        noOfRowsFakturaNr = resultat.most_common(1)[0][1]
+        print(noOfRowsFakturaNr)
+        
+        noOfRowsTotal = len(tmp)
+        noOfRowsFakturaNr = (Counter(d["FakNo"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsReference = (Counter(d["Reference"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsFakturabeloeb = (Counter(d["FakturaBruttoBelob"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsFakturaudsteder = (Counter(d["Fakturaudsteder"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsAar = (Counter(d["Regnskabsaar"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsBilagsdato = (Counter(d["Bilagsdato"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsEAN = (Counter(d["EAN"] for d in tmp)).most_common(1)[0][1]
+        
+        if noOfRowsFakturaNr == 1: noOfRowsFakturaNr = noOfRowsTotal
+        if noOfRowsTotal-noOfRowsReference == 0: noOfRowsReference = 1
+        if noOfRowsTotal-noOfRowsFakturabeloeb == 0: noOfRowsFakturabeloeb = 1
+        if noOfRowsTotal-noOfRowsFakturaudsteder == 0: noOfRowsFakturaudsteder = 1
+        if noOfRowsTotal-noOfRowsAar == 0: noOfRowsAar = 1
+        if noOfRowsTotal-noOfRowsBilagsdato == 0: noOfRowsBilagsdato = 1
+        if noOfRowsTotal-noOfRowsEAN == 0: noOfRowsEAN = 1
+        rule = 0
+        if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar == 1 and noOfRowsTotal > 1):
+            print("Kontrol af faktura - rule 1")
+            rule = 1
+        if noOfRowsTotal == 1:
+            print("Kun 1 faktura - rule 2")
+            rule = 2
+        if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar > 1 and noOfRowsTotal > 1):    
+            print("Aarstal ikke ens - rule 3")
+            rule = 3
+        if (rule == 0):
+            print("Ingen rule valgt endnu...")
+            rule = 4
             
         print("stop her")
+        obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
+        obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
+
         
     if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
         print(queue_element.queue_name) 
@@ -187,4 +247,5 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
 
         print("Hele tekstindholdet:\n", data_WebView)   
     
-    orchestrator_connection.log_trace("Running process - end")    
+    orchestrator_connection.log_trace("Running process - end")
+    print("Running process - end")    
