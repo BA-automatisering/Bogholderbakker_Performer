@@ -175,7 +175,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'Regnskabsaar':Regnskabsaar, 
                 'Bilagsdato':Bilagsdato, 
                 'EAN':EAN})
+        time.sleep(2)
+        try:
+            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
+        except:
+            orchestrator_connection.log_trace("Sletter excel fra except")
+            time.sleep(2)
+            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
         
+            
         resultat = Counter(d["FakNo"] for d in tmp)
         print(resultat)
         noOfRowsFakturaNr = resultat.most_common(1)[0][1]
@@ -210,12 +218,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         if (rule == 0):
             print("Ingen rule valgt endnu...")
             rule = 4
-        try:
-            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
-        except:
-            orchestrator_connection.log_trace("Sletter excel fra except")
-            time.sleep(2)
-            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+        
                 
         time.sleep(3)   
         print("stop her")
