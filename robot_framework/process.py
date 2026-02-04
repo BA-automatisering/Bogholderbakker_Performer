@@ -261,7 +261,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         
                 
         time.sleep(3)
-        orchestrator_connection.log_trace("Rule: "+rule)   
+        orchestrator_connection.log_trace("Rule: "+str(rule))
         print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
