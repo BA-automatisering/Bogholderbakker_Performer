@@ -80,6 +80,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     time.sleep(5)
     grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
     nr = 0
+    nr2 = -1
     data = []
     for r in range(grid.RowCount):
         a = grid.GetCellValue(r,"WI_TEXT")
