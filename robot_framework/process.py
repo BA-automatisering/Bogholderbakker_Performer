@@ -153,7 +153,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[1]/usr/ctxtDY_PATH").caretPosition = 7
         obj_sess.findById("wnd[1]/tbar[0]/btn[0]").press()
         
-        #subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+        
         wb = load_workbook(filename="C:\\tmp\\"+invoiceNo+"_"+queue_element.queue_name+".XLSX")
         ark1 = wb["Sheet1"]
         ark1 = wb.active
@@ -210,7 +210,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         if (rule == 0):
             print("Ingen rule valgt endnu...")
             rule = 4
-            
+        subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
+        time.sleep(3)   
         print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
