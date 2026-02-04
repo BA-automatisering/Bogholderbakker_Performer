@@ -90,16 +90,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         nr += 1
     id = next((p for p in data if p["title"].lower() == title.lower()), None)
     nr2 = id["no"]
-    
+    orchestrator_connection.log_trace("Nr i liste = "+str(nr))
+    time.sleep(2)
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
-    #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
-    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
+    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
-    
-    #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[4]").select() #Vis forkert...
-    #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").doubleClickCurrentCell
-    obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for Haandter afvist åbnes WebViev
+    obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
     
     #tree = obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell")
     #print("Type:", tree.Type)
@@ -140,7 +137,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         #print("Type:", tree.Type) #Type: GuiTextField
         #print("Id:", tree.Id)
     
-    
     if queue_element.queue_name=="Bogholderbakke_DobbeltFaktura":
         obj_sess = get_client()
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
@@ -148,17 +144,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         #Træk direkte fra siden
         grid = obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell")
         """
-        print("Type:", grid.Type)
-        print("Id:", grid.Id)
-        print("IdSub:", grid.SubType)
-        
         cols = grid.ColumnOrder  # GuiCollection af kolonnenavne (tekniske)
         for i in range(cols.Length):
             col = cols.ElementAt(i)
             print(i, col)
         """
-        #cols = grid.ColumnOrder
-        #colnames = [cols.ElementAt(i) for i in range(cols.Length)]
         
         tmp = []
         for r in range(grid.RowCount):
@@ -177,52 +167,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'Regnskabsaar':Regnskabsaar, 
                 'Bilagsdato':Bilagsdato, 
                 'EAN':EAN})
-           
-       
-        #Herfra eksporteres excel - bruges ikke mere
-        """
-        #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press()
-        obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").pressToolbarContextButton("&MB_EXPORT")
-        obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").selectContextMenuItem("&XXL")
-        obj_sess.findById("wnd[1]/usr/ctxtDY_PATH").text = "C:\\tmp\\"
-        obj_sess.findById("wnd[1]/usr/ctxtDY_FILENAME").text = invoiceNo+"_"+queue_element.queue_name+".xlsx"
-        obj_sess.findById("wnd[1]/usr/ctxtDY_PATH").setFocus
-        obj_sess.findById("wnd[1]/usr/ctxtDY_PATH").caretPosition = 7
-        obj_sess.findById("wnd[1]/tbar[0]/btn[0]").press()
-        
-        
-        wb = load_workbook(filename="C:\\tmp\\"+invoiceNo+"_"+queue_element.queue_name+".XLSX")
-        ark1 = wb["Sheet1"]
-        ark1 = wb.active
-        row_count = ark1.max_row
-        tmp = []
-        for row_idx in range(2, row_count+1):
-            FakNo = ark1[f"{"D"}{row_idx}"].value
-            Reference = ark1[f"{"J"}{row_idx}"].value
-            FakturaBruttoBelob = ark1[f"{"K"}{row_idx}"].value
-            Fakturaudsteder = ark1[f"{"M"}{row_idx}"].value
-            Regnskabsaar = ark1[f"{"E"}{row_idx}"].value
-            Bilagsdato = ark1[f"{"G"}{row_idx}"].value
-            EAN = ark1[f"{"L"}{row_idx}"].value
-            tmp.append({
-                'FakNo':FakNo,
-                'Reference':Reference, 
-                'FakturaBruttoBelob':FakturaBruttoBelob, 
-                'Fakturaudsteder':Fakturaudsteder, 
-                'Regnskabsaar':Regnskabsaar, 
-                'Bilagsdato':Bilagsdato, 
-                'EAN':EAN})
-        time.sleep(2)
-        try:
-            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
-            print("Sletter excel fra try")
-        except:
-            orchestrator_connection.log_trace("Sletter excel fra except")
-            time.sleep(2)
-            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
-            print("Sletter excel fra except")
-        
-        """  
           
         resultat = Counter(d["FakNo"] for d in tmp)
         print(resultat)
@@ -245,6 +189,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         if noOfRowsTotal-noOfRowsAar == 0: noOfRowsAar = 1
         if noOfRowsTotal-noOfRowsBilagsdato == 0: noOfRowsBilagsdato = 1
         if noOfRowsTotal-noOfRowsEAN == 0: noOfRowsEAN = 1
+        
         rule = 0
         if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar == 1 and noOfRowsTotal > 1):
             print("Kontrol af faktura - rule 1")
@@ -265,7 +210,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
-
         
     if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
         print(queue_element.queue_name) 
