@@ -210,7 +210,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         if (rule == 0):
             print("Ingen rule valgt endnu...")
             rule = 4
-        subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
+        try:
+            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
+        except:
+            orchestrator_connection.log_trace("Sletter excel fra except")
+            time.sleep(2)
+            subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+                
         time.sleep(3)   
         print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
