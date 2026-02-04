@@ -96,7 +96,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     orchestrator_connection.log_trace("Running: "+aktuel_bogholderbakke)
 
     def open_RI(driver):
-        orchestrator_connection.log_trace("open_RI started...")
+        #orchestrator_connection.log_trace("open_RI started...")
         driver.get("https://portal.kmd.dk/irj/portal")
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "logonuidfield")))
         driver.maximize_window()
@@ -113,7 +113,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
     
     def open_SAP(driver):
-        orchestrator_connection.log_trace("open_SAP started...")
+        #orchestrator_connection.log_trace("open_SAP started...")
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, '//div[@class="TabText_SmallTabs" and text()="Mine Genveje"]')))
         driver.find_element(By.XPATH, '//div[@class="TabText_SmallTabs" and text()="Mine Genveje"]').click()
                 
@@ -133,7 +133,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
 
     def goto_bogholderbakker_i_SAP():
-        orchestrator_connection.log_trace("goto_bogholderbakker_i_SAP started...")
+        #orchestrator_connection.log_trace("goto_bogholderbakker_i_SAP started...")
         time.sleep(3)
         obj_sess = get_client()
         obj_sess.findById("wnd[0]").maximize()
@@ -181,7 +181,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
 
     def get_client():
-        orchestrator_connection.log_trace("get_client started...")
+        #orchestrator_connection.log_trace("get_client started...")
         sap_gui_auto = win32com.client.GetObject("SAPGUI")
         if not type(sap_gui_auto) == win32com.client.CDispatch:
             return
@@ -198,7 +198,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
             for sess in range(connection.Children.Count):
                 # Loop through each connection and return sessions that are on the main screen 'SESSION_MANAGER'
                 session = connection.Children(sess)
-                print(session.Info.Transaction)
+                #print(session.Info.Transaction)
                 if session.Info.Transaction == 'SESSION_MANAGER':
                     return session
                 else:

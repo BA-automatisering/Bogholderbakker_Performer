@@ -38,7 +38,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     orchestrator_connection.log_trace("Running process...")
     
     def get_client():
-        orchestrator_connection.log_trace("get_client started...")
+        #orchestrator_connection.log_trace("get_client started...")
         sap_gui_auto = win32com.client.GetObject("SAPGUI")
         if not type(sap_gui_auto) == win32com.client.CDispatch:
             return
@@ -55,7 +55,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             for sess in range(connection.Children.Count):
                 # Loop through each connection and return sessions that are on the main screen 'SESSION_MANAGER'
                 session = connection.Children(sess)
-                print(session.Info.Transaction)
+                #print(session.Info.Transaction)
                 if session.Info.Transaction == 'SESSION_MANAGER':
                     return session
                 else:
@@ -91,7 +91,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         nr += 1
     id = next((p for p in data if p["title"].lower() == title.lower()), None)
     nr2 = id["no"]
-    orchestrator_connection.log_trace("Nr i liste = "+str(nr))
+    print("Nr i liste = "+str(nr2))
+    orchestrator_connection.log_trace("Nr i liste = "+str(nr2))
     time.sleep(2)
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
     obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
@@ -133,7 +134,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             if i == 9:
                 break
             i += 1
-        print("stop")
+        
         #tree = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR")
         #print("Type:", tree.Type) #Type: GuiTextField
         #print("Id:", tree.Id)
@@ -170,9 +171,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'EAN':EAN})
           
         resultat = Counter(d["FakNo"] for d in tmp)
-        print(resultat)
+        #print(resultat)
         noOfRowsFakturaNr = resultat.most_common(1)[0][1]
-        print(noOfRowsFakturaNr)
+        #print(noOfRowsFakturaNr)
         
         noOfRowsTotal = len(tmp)
         noOfRowsFakturaNr = (Counter(d["FakNo"] for d in tmp)).most_common(1)[0][1]
@@ -193,22 +194,22 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         
         rule = 0
         if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar == 1 and noOfRowsTotal > 1):
-            print("Kontrol af faktura - rule 1")
+            #print("Kontrol af faktura - rule 1")
             rule = 1
         if noOfRowsTotal == 1:
-            print("Kun 1 faktura - rule 2")
+            #print("Kun 1 faktura - rule 2")
             rule = 2
         if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar > 1 and noOfRowsTotal > 1):    
-            print("Aarstal ikke ens - rule 3")
+            #print("Aarstal ikke ens - rule 3")
             rule = 3
         if (rule == 0):
-            print("Ingen rule valgt endnu...")
+            #print("Ingen rule valgt endnu...")
             rule = 4
         
                 
         time.sleep(3)
         orchestrator_connection.log_trace("Rule: "+str(rule))
-        print("stop her")
+        #print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
         
@@ -244,4 +245,3 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         print("Hele tekstindholdet:\n", data_WebView)   
     
     orchestrator_connection.log_trace("Running process - end")
-    print("Running process - end")    
