@@ -144,6 +144,43 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     if queue_element.queue_name=="Bogholderbakke_DobbeltFaktura":
         obj_sess = get_client()
         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
+        
+        #Træk direkte fra siden
+        grid = obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell")
+        """
+        print("Type:", grid.Type)
+        print("Id:", grid.Id)
+        print("IdSub:", grid.SubType)
+        
+        cols = grid.ColumnOrder  # GuiCollection af kolonnenavne (tekniske)
+        for i in range(cols.Length):
+            col = cols.ElementAt(i)
+            print(i, col)
+        """
+        #cols = grid.ColumnOrder
+        #colnames = [cols.ElementAt(i) for i in range(cols.Length)]
+        
+        tmp = []
+        for r in range(grid.RowCount):
+            FakNo = grid.GetCellValue(r,"BELNR")
+            Reference = grid.GetCellValue(r,"XBLNR")
+            FakturaBruttoBelob = grid.GetCellValue(r,"RMWWR")
+            Fakturaudsteder = grid.GetCellValue(r,"LIFNR")
+            Regnskabsaar = grid.GetCellValue(r,"GJAHR")
+            Bilagsdato = grid.GetCellValue(r,"BLDAT")
+            EAN = grid.GetCellValue(r,"BKTXT")
+            tmp.append({
+                'FakNo':FakNo,
+                'Reference':Reference, 
+                'FakturaBruttoBelob':FakturaBruttoBelob, 
+                'Fakturaudsteder':Fakturaudsteder, 
+                'Regnskabsaar':Regnskabsaar, 
+                'Bilagsdato':Bilagsdato, 
+                'EAN':EAN})
+           
+       
+        #Herfra eksporteres excel - bruges ikke mere
+        """
         #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press()
         obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").pressToolbarContextButton("&MB_EXPORT")
         obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell").selectContextMenuItem("&XXL")
@@ -178,12 +215,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         time.sleep(2)
         try:
             subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True) 
+            print("Sletter excel fra try")
         except:
             orchestrator_connection.log_trace("Sletter excel fra except")
             time.sleep(2)
             subprocess.call("taskkill /F /IM excel.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+            print("Sletter excel fra except")
         
-            
+        """  
+          
         resultat = Counter(d["FakNo"] for d in tmp)
         print(resultat)
         noOfRowsFakturaNr = resultat.most_common(1)[0][1]
@@ -220,7 +260,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             rule = 4
         
                 
-        time.sleep(3)   
+        time.sleep(3)
+        orchestrator_connection.log_trace("Rule: "+rule)   
         print("stop her")
         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
