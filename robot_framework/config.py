@@ -31,9 +31,9 @@ ERROR_EMAIL = "Error Email Leif"
 # ----------------------
 
 # The name of the job queue (if any)
-QUEUE_NAME = None
+#QUEUE_NAME = None
 #QUEUE_NAME = "Bogholderbakke_DobbeltFaktura"
-#QUEUE_NAME = json.loads(orchestrator_connection.process_arguments)['aktuel_queue']
+QUEUE_NAME = json.loads(orchestrator_connection.process_arguments)['aktuel_queue']
 
 # The limit on how many queue elements to process
 MAX_TASK_COUNT = 100
