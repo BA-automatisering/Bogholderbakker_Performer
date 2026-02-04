@@ -116,8 +116,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").caretPosition = 10
         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Her slettes bilaget
         sbar = obj_sess.findById("wnd[0]/sbar")
-        print("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-        orchestrator_connection.log_trace("Title: "+title+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+        print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+        orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
         time.sleep(2)
         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF")
         #time.sleep(2)

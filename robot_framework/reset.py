@@ -81,7 +81,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges disse 2 linjer
-    #aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
     #aktuel_type = json.loads(orchestrator_connection.process_arguments)['aktuel_type']
     
     #Ved TEST lokalt bruges nedenstående parametre...
@@ -89,7 +89,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
     #aktuel_bogholderbakke = "Kombit Fakturaer"
     #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-    aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
     #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #aktuel_type = "ikkKY"
     
