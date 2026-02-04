@@ -88,8 +88,8 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
     #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
     #aktuel_bogholderbakke = "Kombit Fakturaer"
-    aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
+    aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
     #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #aktuel_type = "ikkKY"
     
