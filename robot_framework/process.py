@@ -77,8 +77,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print("New: "+title)
     
     obj_sess = get_client()
-    
-    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")))
+    time.sleep(5)
     grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
     nr = 0
     data = []
