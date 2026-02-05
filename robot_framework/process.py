@@ -172,7 +172,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         resultat = Counter(d["FakNo"] for d in tmp)
         correct = invoiceNo in Counter(d["FakNo"] for d in tmp)
         if not correct:
-            print("Forkert er valgt")
+            print("Forkert er valgt...")
+            orchestrator_connection.log_trace("Forkert er valgt...")
         print("FakNo")
         print(resultat)
         
@@ -224,14 +225,19 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         match rule:
             case 1:
                 print("Kontrol af faktura - rule 1")
+                orchestrator_connection.log_trace("Kontrol af faktura - rule 1")
             case 2:
                 print("Kun 1 faktura - rule 2")
+                orchestrator_connection.log_trace("Kun 1 faktura - rule 2")
             case 3:
                 print("Aarstal ikke ens - rule 3")
+                orchestrator_connection.log_trace("Aarstal ikke ens - rule 3")
             case 4:
-                print("Ingen rule valgt endnu... - rule 4")    
+                print("Ingen rule valgt endnu... - rule 4")
+                orchestrator_connection.log_trace("Ingen rule valgt endnu... - rule 4")
             case _:
                 print("Alt andet...")
+                orchestrator_connection.log_trace("Alt andet...")
                                 
                 
         time.sleep(3)
