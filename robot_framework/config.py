@@ -32,7 +32,7 @@ ERROR_EMAIL = "Error Email Leif"
 
 # The name of the job queue (if any)
 #QUEUE_NAME = None
-QUEUE_NAME = "Bogholderbakke_NulBeløb"
+#QUEUE_NAME = "Bogholderbakke_NulBeløb"
 #QUEUE_NAME = json.loads(orchestrator_connection.process_arguments)['aktuel_queue']
 
 # The limit on how many queue elements to process

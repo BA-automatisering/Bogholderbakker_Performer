@@ -77,8 +77,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print("New: "+title)
     
     obj_sess = get_client()
-    time.sleep(5)
+    
     grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
+    
+    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+    time.sleep(1)
     nr = 0
     nr2 = -1
     data = []
@@ -97,7 +100,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
     obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
+    time.sleep(2)
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
+    time.sleep(2)
     obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
     
     #tree = obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell")
@@ -145,12 +150,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         
         #Træk direkte fra siden
         grid = obj_sess.findById("wnd[0]/usr/cntlCONTAINER/shellcont/shell")
-        """
-        cols = grid.ColumnOrder  # GuiCollection af kolonnenavne (tekniske)
-        for i in range(cols.Length):
-            col = cols.ElementAt(i)
-            print(i, col)
-        """
         
         tmp = []
         for r in range(grid.RowCount):
@@ -171,41 +170,69 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 'EAN':EAN})
           
         resultat = Counter(d["FakNo"] for d in tmp)
-        #print(resultat)
-        noOfRowsFakturaNr = resultat.most_common(1)[0][1]
-        #print(noOfRowsFakturaNr)
+        correct = invoiceNo in Counter(d["FakNo"] for d in tmp)
+        if not correct:
+            print("Forkert er valgt")
+        print("FakNo")
+        print(resultat)
+        
+        """
+        resultat = Counter(d["Reference"] for d in tmp)
+        print("Reference")
+        print(resultat)
+        resultat = Counter(d["FakturaBruttoBelob"] for d in tmp)
+        print("FakturaBruttoBelob")
+        print(resultat)
+        resultat = Counter(d["Regnskabsaar"] for d in tmp)
+        print("Regnskabsaar")
+        print(resultat)
+        resultat = Counter(d["Bilagsdato"] for d in tmp)
+        print("Bilagsdato")
+        print(resultat)
+        resultat = Counter(d["EAN"] for d in tmp)
+        print("EAN")
+        print(resultat)
+        """
+        
         
         noOfRowsTotal = len(tmp)
-        noOfRowsFakturaNr = (Counter(d["FakNo"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsReference = (Counter(d["Reference"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsFakturabeloeb = (Counter(d["FakturaBruttoBelob"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsFakturaudsteder = (Counter(d["Fakturaudsteder"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsAar = (Counter(d["Regnskabsaar"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsBilagsdato = (Counter(d["Bilagsdato"] for d in tmp)).most_common(1)[0][1]
-        noOfRowsEAN = (Counter(d["EAN"] for d in tmp)).most_common(1)[0][1]
-        
-        if noOfRowsFakturaNr == 1: noOfRowsFakturaNr = noOfRowsTotal
-        if noOfRowsTotal-noOfRowsReference == 0: noOfRowsReference = 1
-        if noOfRowsTotal-noOfRowsFakturabeloeb == 0: noOfRowsFakturabeloeb = 1
-        if noOfRowsTotal-noOfRowsFakturaudsteder == 0: noOfRowsFakturaudsteder = 1
-        if noOfRowsTotal-noOfRowsAar == 0: noOfRowsAar = 1
-        if noOfRowsTotal-noOfRowsBilagsdato == 0: noOfRowsBilagsdato = 1
-        if noOfRowsTotal-noOfRowsEAN == 0: noOfRowsEAN = 1
+        #noOfRowsFakturaNr = (Counter(d["FakNo"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsFakturaNr = len(Counter(d["FakNo"] for d in tmp))
+        #noOfRowsReference = (Counter(d["Reference"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsReference = len(Counter(d["Reference"] for d in tmp))
+        #noOfRowsFakturabeloeb = (Counter(d["FakturaBruttoBelob"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsFakturabeloeb = len(Counter(d["FakturaBruttoBelob"] for d in tmp))
+        #noOfRowsFakturaudsteder = (Counter(d["Fakturaudsteder"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsFakturaudsteder = len(Counter(d["Fakturaudsteder"] for d in tmp))
+        #noOfRowsAar = (Counter(d["Regnskabsaar"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsAar = len(Counter(d["Regnskabsaar"] for d in tmp))
+        #noOfRowsBilagsdato = (Counter(d["Bilagsdato"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsBilagsdato = len(Counter(d["Bilagsdato"] for d in tmp))
+        #noOfRowsEAN = (Counter(d["EAN"] for d in tmp)).most_common(1)[0][1]
+        noOfRowsEAN = len(Counter(d["EAN"] for d in tmp))
         
         rule = 0
         if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar == 1 and noOfRowsTotal > 1):
-            #print("Kontrol af faktura - rule 1")
             rule = 1
         if noOfRowsTotal == 1:
-            #print("Kun 1 faktura - rule 2")
             rule = 2
         if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar > 1 and noOfRowsTotal > 1):    
-            #print("Aarstal ikke ens - rule 3")
             rule = 3
         if (rule == 0):
-            #print("Ingen rule valgt endnu...")
             rule = 4
         
+        match rule:
+            case 1:
+                print("Kontrol af faktura - rule 1")
+            case 2:
+                print("Kun 1 faktura - rule 2")
+            case 3:
+                print("Aarstal ikke ens - rule 3")
+            case 4:
+                print("Ingen rule valgt endnu... - rule 4")    
+            case _:
+                print("Alt andet...")
+                                
                 
         time.sleep(3)
         orchestrator_connection.log_trace("Rule: "+str(rule))

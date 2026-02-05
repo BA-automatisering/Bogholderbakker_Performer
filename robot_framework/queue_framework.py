@@ -34,7 +34,8 @@ def main():
             # Queue loop
             while task_count < config.MAX_TASK_COUNT:
                 task_count += 1
-                queue_element = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
+                #queue_element = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
+                queue_element = orchestrator_connection.get_next_queue_element(json.loads(orchestrator_connection.process_arguments)['aktuel_queue'])
 
                 if not queue_element:
                     orchestrator_connection.log_info("Queue empty.")
