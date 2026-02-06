@@ -80,17 +80,16 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     chrome_service = ChromeService()
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
-    #Ved PROD bruges disse 2 linjer
-    if aktuel_bogholderbakke=="":
-        aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
-    else:    
-        #Ved TEST lokalt bruges nedenstående parametre...
-        #aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
-        #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
-        #aktuel_bogholderbakke = "Kombit Fakturaer"
-        #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-        aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
-        #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    #Ved PROD bruges denne linje
+    aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+
+    #Ved TEST lokalt bruges nedenstående parametre...
+    #aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
+    #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
+    #aktuel_bogholderbakke = "Kombit Fakturaer"
+    #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
+    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
         
     orchestrator_connection.log_trace("Running: "+aktuel_bogholderbakke)
 
