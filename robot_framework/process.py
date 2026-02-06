@@ -173,43 +173,18 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         correct = invoiceNo in Counter(d["FakNo"] for d in tmp)
         if not correct:
             print("Forkert er valgt...")
-            orchestrator_connection.log_trace("Forkert er valgt...")
+            orchestrator_connection.log_trace("Forkert er valgt... her skal laves ERROR")
         print("FakNo")
         print(resultat)
         
-        """
-        resultat = Counter(d["Reference"] for d in tmp)
-        print("Reference")
-        print(resultat)
-        resultat = Counter(d["FakturaBruttoBelob"] for d in tmp)
-        print("FakturaBruttoBelob")
-        print(resultat)
-        resultat = Counter(d["Regnskabsaar"] for d in tmp)
-        print("Regnskabsaar")
-        print(resultat)
-        resultat = Counter(d["Bilagsdato"] for d in tmp)
-        print("Bilagsdato")
-        print(resultat)
-        resultat = Counter(d["EAN"] for d in tmp)
-        print("EAN")
-        print(resultat)
-        """
-        
         
         noOfRowsTotal = len(tmp)
-        #noOfRowsFakturaNr = (Counter(d["FakNo"] for d in tmp)).most_common(1)[0][1]
         noOfRowsFakturaNr = len(Counter(d["FakNo"] for d in tmp))
-        #noOfRowsReference = (Counter(d["Reference"] for d in tmp)).most_common(1)[0][1]
         noOfRowsReference = len(Counter(d["Reference"] for d in tmp))
-        #noOfRowsFakturabeloeb = (Counter(d["FakturaBruttoBelob"] for d in tmp)).most_common(1)[0][1]
         noOfRowsFakturabeloeb = len(Counter(d["FakturaBruttoBelob"] for d in tmp))
-        #noOfRowsFakturaudsteder = (Counter(d["Fakturaudsteder"] for d in tmp)).most_common(1)[0][1]
         noOfRowsFakturaudsteder = len(Counter(d["Fakturaudsteder"] for d in tmp))
-        #noOfRowsAar = (Counter(d["Regnskabsaar"] for d in tmp)).most_common(1)[0][1]
         noOfRowsAar = len(Counter(d["Regnskabsaar"] for d in tmp))
-        #noOfRowsBilagsdato = (Counter(d["Bilagsdato"] for d in tmp)).most_common(1)[0][1]
         noOfRowsBilagsdato = len(Counter(d["Bilagsdato"] for d in tmp))
-        #noOfRowsEAN = (Counter(d["EAN"] for d in tmp)).most_common(1)[0][1]
         noOfRowsEAN = len(Counter(d["EAN"] for d in tmp))
         
         rule = 0
@@ -226,12 +201,28 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             case 1:
                 print("Kontrol af faktura - rule 1")
                 orchestrator_connection.log_trace("Kontrol af faktura - rule 1")
+                """
+                obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
+                obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0001")
+                obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
+                sbar = obj_sess.findById("wnd[0]/sbar")
+                print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                """
             case 2:
                 print("Kun 1 faktura - rule 2")
                 orchestrator_connection.log_trace("Kun 1 faktura - rule 2")
+                #Til manuel liste
+                #Kø-element til Faktura Kontrol Center
+                row_data = {
+                "title": ark1[f"{titleK}{rowidx}"].value,
+                "invoiceNo": re.search("[0-9]{10}",ark1[f"{invoiceNoK}{rowidx}"].value).group(),
+                "eanNr": ark1[f"{eanNoK}{rowidx}"].value
+                }
             case 3:
                 print("Aarstal ikke ens - rule 3")
                 orchestrator_connection.log_trace("Aarstal ikke ens - rule 3")
+                #"Årstal ikke ens - fakturabilagsstatus på oprindelig faktura ("+InvoiceNumber+") er lig "+Fakturabilagsstatus
             case 4:
                 print("Ingen rule valgt endnu... - rule 4")
                 orchestrator_connection.log_trace("Ingen rule valgt endnu... - rule 4")

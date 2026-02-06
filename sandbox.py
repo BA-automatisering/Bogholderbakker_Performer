@@ -37,6 +37,14 @@ queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_D
 process(orchestrator_connection, queue_element)
 queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
 process(orchestrator_connection, queue_element)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
+process(orchestrator_connection, queue_element)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
+process(orchestrator_connection, queue_element)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
+process(orchestrator_connection, queue_element)
+queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
+process(orchestrator_connection, queue_element)
 
 
 
