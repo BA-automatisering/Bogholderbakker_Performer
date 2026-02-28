@@ -59,7 +59,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     downloads_folder="C:\\tmp"
     bakken = ''
     queue_items = []
-    globals.manuelliste[]
+    globals.manuelliste = []
     
     file = "C:\\tmp\\EXPORT.XLSX"
     if os.path.exists(file):
