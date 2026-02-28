@@ -376,8 +376,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
                     #Hvis Bogføringsperiode så klik Nej
                     
-                    #XML herfra
                     i = 1
+                    time.sleep(1)
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
@@ -385,14 +385,22 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
                         #pyautogui.press('enter')
-                        obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press() #Afslut - gul knap
-                        obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                        obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
+
+                        #obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press() #Afslut - gul knap
+                        #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
                         time.sleep(1)
                         i += 1
-                    obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
-                    obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
-                    obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
-                    #XML hertil
+                    time.sleep(1)
+                    try:
+                        invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
+                        if invoiceNo == invoiceNo_txt:
+                            obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
+                            obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                            obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
+                    except:
+                        print("Er tilbage ved listen...")
+                        orchestrator_connection.log_trace("Er tilbage ved listen...")
                     
                 
                     """
