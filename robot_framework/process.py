@@ -369,17 +369,20 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
                     try:
                         obj_sess.findById("wnd[1]/usr/btnBUTTON_2").press() #NEJ, til 'ikke momsbærende ændres til momsbærende...'
+                        orchestrator_connection.log_trace("Nej til Moms...")
                     except:
                         print("Moms findes ikke...")
+                        orchestrator_connection.log_trace("Intet omkring Moms...")
                     
                     #Hvis Bogføringsperiode så klik Nej
                     
                     #XML herfra
                     i = 1
-                    while i < 10:
+                    while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                        if i == 10 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
+                        orchestrator_connection.log_trace(str(i)+" Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                        if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
                         #pyautogui.press('enter')
                         obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press() #Afslut - gul knap
