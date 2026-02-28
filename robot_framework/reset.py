@@ -2,6 +2,7 @@
 
 import subprocess
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
+from robot_framework import globals
 
 import os
 from selenium import webdriver
@@ -14,7 +15,6 @@ import time
 import pyautogui
 import win32com.client
 import json
-
 
 
 def reset(orchestrator_connection: OrchestratorConnection) -> None:
@@ -81,18 +81,20 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges denne linje
-    aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    #aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
 
     #Ved TEST lokalt bruges nedenstående parametre...
-    #aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
-    #aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
+    globals.aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
+    #globals.aktuel_bogholderbakke = "Fakturabeslut.07: Inkonsistent XML"
     #aktuel_bogholderbakke = "Kombit Fakturaer"
-    #aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
-    #aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
-    #aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    #globals.aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
+    #globals.aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
+    #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
         
-    orchestrator_connection.log_trace("Running: "+aktuel_bogholderbakke)
-
+    orchestrator_connection.log_trace("Running: "+globals.aktuel_bogholderbakke)
+    print("Running: "+globals.aktuel_bogholderbakke)
+    
     def open_RI(driver):
         #orchestrator_connection.log_trace("open_RI started...")
         driver.get("https://portal.kmd.dk/irj/portal")
@@ -163,8 +165,8 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
             #print(key, "-", tree.GetNodeTextByKey(key)) #Viser sammenhæng mellem navn og nummer
             selectedNodeList.append({"key":key,"name":tree.GetNodeTextByKey(key)})
             
-        id = next((p for p in selectedNodeList if p["name"].lower() == aktuel_bogholderbakke.lower()), None)
-            
+        id = next((p for p in selectedNodeList if p["name"].lower() == globals.aktuel_bogholderbakke.lower()), None)
+
         if not id == None:
             for x in id.items():
                 if x[0] == "key":
@@ -175,7 +177,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell").selectedNode = nr  #Her er nummer som passer med navnet
 
         else:
-            print(f"Bogholderbakken '{aktuel_bogholderbakke}' er ikke aktuel lige nu...")
+            print(f"Bogholderbakken '{globals.aktuel_bogholderbakke}' er ikke aktuel lige nu...")
 
 
     def get_client():
@@ -217,9 +219,9 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
     open_RI(driver)
     time.sleep(3)
-    open_SAP(driver)    
-    goto_bogholderbakker_i_SAP()
-    go_to_specific_bakke()
-    
+    open_SAP(driver)
+    if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":    
+        goto_bogholderbakker_i_SAP()
+        go_to_specific_bakke()
     orchestrator_connection.log_trace("Opening all applications - end")
     

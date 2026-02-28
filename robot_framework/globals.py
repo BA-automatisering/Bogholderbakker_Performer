@@ -1,0 +1,2 @@
+manuelliste = []
+aktuel_bogholderbakke = ""

@@ -21,6 +21,7 @@ FAIL_ROBOT_ON_TOO_MANY_ERRORS = True
 # Error screenshot config
 SMTP_SERVER = "smtp.adm.aarhuskommune.dk"
 SMTP_PORT = 25
+LIST_SENDER = "RPA_info@aarhus.dk"
 SCREENSHOT_SENDER = "robot@friend.dk"
 
 # Constant/Credential names

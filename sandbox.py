@@ -1,6 +1,8 @@
 """For testing: Run process.py like OpenOrchestrator would run it."""
 import os
 import json
+from robot_framework import globals
+from robot_framework import lists
 
 
 from OpenOrchestrator.orchestrator_connection.connection import (
@@ -30,22 +32,13 @@ print("sandbox started...okay")
 
 
 reset.open_all(orchestrator_connection)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
-queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
-process(orchestrator_connection, queue_element)
+n = 1
+while n < 74:
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_ÆndreFaktura')
+    process(orchestrator_connection, queue_element)
+    n += 1
+if not len(globals.manuelliste) == 0:
+    lists.send_manuelliste(globals.aktuel_bogholderbakke)
 
 
 
