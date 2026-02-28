@@ -93,11 +93,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     orchestrator_connection.log_trace("NEW: "+title)
     print("NEW: "+title)
-    time.sleep(2)
+    time.sleep(1)
     
     obj_sess = get_client()
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
+        time.sleep(1)
         grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
         
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
