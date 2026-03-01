@@ -91,8 +91,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     fakturabeløb = specific_content.get("fakturabeløb", None)
     leverandør = specific_content.get("leverandør", None)
     
-    orchestrator_connection.log_trace("NEW: "+title)
-    print("NEW: "+title)
+    globals.item_count += 1
+    orchestrator_connection.log_trace(str(globals.item_count)+" NEW: "+title)
+    print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
     obj_sess = get_client()
@@ -231,7 +232,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 match rule:
                     case 1:
                         print("Kontrol af faktura - rule 1 - slettes...")
-                        orchestrator_connection.log_trace("Kontrol af faktura - rule 1 - slettes...")
+                        #orchestrator_connection.log_trace("Kontrol af faktura - rule 1 - slettes...")
                         
                         #Bilag slettes her...
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
@@ -247,10 +248,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         else:
                             print("Korrekt faktura IKKE åbnet...")
+                            orchestrator_connection.log_trace("Korrekt faktura IKKE åbnet...")
                         
                     case 2:
                         print("Kun 1 faktura - rule 2 - kø-element til Faktura Kontrol Center")
-                        orchestrator_connection.log_trace("Kun 1 faktura - rule 2 - kø-element til Faktura Kontrol Center")
+                        orchestrator_connection.log_trace("Kun 1 faktura - rule 2 - kø-element til 'Faktura Kontrol Center' samt manuelliste")
                         #Til manuel liste
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 03 - Kontroller dob fakt",
@@ -303,7 +305,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                         
                         
                 time.sleep(3)
-                orchestrator_connection.log_trace("Rule: "+str(rule))
+                #orchestrator_connection.log_trace("Rule: "+str(rule))
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                 obj_sess = get_client()
@@ -377,7 +379,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     except:
                         info = info + " MOMS-vises-ikke"
                     print(info)
-                    orchestrator_connection.log_trace(info)
+                    #orchestrator_connection.log_trace(info)
                         
                 invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                 if invoiceNo == invoiceNo_txt:
@@ -390,7 +392,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                        orchestrator_connection.log_trace(str(i)+" Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                        #orchestrator_connection.log_trace(str(i)+" Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
                         obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
@@ -407,10 +409,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
                     except:
                         print("Er tilbage ved listen...")
-                        orchestrator_connection.log_trace("Er tilbage ved listen...")
+                        #orchestrator_connection.log_trace("Er tilbage ved listen...")
                     
-                
-   
         else:
             orchestrator_connection.log_trace("Title '"+title+ "' Opslaget gav intet resultat...")
             #Der skal laves en error her    
