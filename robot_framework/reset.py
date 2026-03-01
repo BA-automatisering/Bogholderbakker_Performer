@@ -28,12 +28,12 @@ def reset(orchestrator_connection: OrchestratorConnection) -> None:
 
 def clean_up(orchestrator_connection: OrchestratorConnection) -> None:
     """Do any cleanup needed to leave a blank slate."""
-    orchestrator_connection.log_trace("Doing cleanup.")
+    #orchestrator_connection.log_trace("Doing cleanup.")
 
 
 def close_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Gracefully close all applications used by the robot."""
-    orchestrator_connection.log_trace("Closing all applications.")
+    #orchestrator_connection.log_trace("Closing all applications.")
 
 
 def kill_all(orchestrator_connection: OrchestratorConnection) -> None:
@@ -107,7 +107,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         try:
             time.sleep(3)
             driver.find_element(By.CLASS_NAME, "button_inner")
-            orchestrator_connection.log_trace("Logged in okay")
+            #orchestrator_connection.log_trace("Logged in okay")
         except Exception as e:
             orchestrator_connection.log_trace("Password skal skiftes...")
             #new_password.newpass(driver,opusbruger_navn,OpusUser,OpusPassword)
@@ -156,7 +156,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
 
 
     def go_to_specific_bakke():
-        orchestrator_connection.log_trace("go_to_specifik_bakkke started...")
+        #orchestrator_connection.log_trace("go_to_specifik_bakkke started...")
         obj_sess = get_client()
         
         tree = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell")
@@ -224,5 +224,5 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":    
         goto_bogholderbakker_i_SAP()
         go_to_specific_bakke()
-    orchestrator_connection.log_trace("Opening all applications - end")
-    
+    #orchestrator_connection.log_trace("Opening all applications - end")
+    print("Opening all applications - end")

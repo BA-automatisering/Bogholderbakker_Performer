@@ -13,6 +13,7 @@ from robot_framework import reset
 from robot_framework.exceptions import handle_error, BusinessError, log_exception
 from robot_framework import process
 from robot_framework import config
+from robot_framework import globals
 import json
 
 

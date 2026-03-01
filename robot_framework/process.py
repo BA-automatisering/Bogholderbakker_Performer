@@ -364,18 +364,26 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
             
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
-                invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
-                if invoiceNo == invoiceNo_txt:
-                    obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select() #Gem forudregistreret bilag
-                    
+                def Bogføringsperiode_Moms():
+                    info = ""
+                    try:
+                        obj_sess.findById("wnd[1]/tbar[0]/btn[0]").press() #Klik 'eneste knap' til mulig bogføringsperiode
+                        info = info + " Bogføring-vises"
+                    except:
+                        info = info + " Bogføring-vises-ikke"   
                     try:
                         obj_sess.findById("wnd[1]/usr/btnBUTTON_2").press() #NEJ, til 'ikke momsbærende ændres til momsbærende...'
-                        orchestrator_connection.log_trace("Nej til Moms...")
+                        info = info + " MOMS-vises"
                     except:
-                        print("Moms findes ikke...")
-                        orchestrator_connection.log_trace("Intet omkring Moms...")
-                    
-                    #Hvis Bogføringsperiode så klik Nej
+                        info = info + " MOMS-vises-ikke"
+                    print(info)
+                    orchestrator_connection.log_trace(info)
+                        
+                invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
+                if invoiceNo == invoiceNo_txt:
+                    print("Korrekt åbnet...")
+                    obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select() #Gem forudregistreret bilag
+                    Bogføringsperiode_Moms()
                     
                     i = 1
                     time.sleep(1)
@@ -385,14 +393,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.log_trace(str(i)+" Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
-                        #pyautogui.press('enter')
                         obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
-
-                        #obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press() #Afslut - gul knap
-                        #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                        Bogføringsperiode_Moms()
                         time.sleep(1)
                         i += 1
                     time.sleep(1)
+                    
                     try:
                         invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                         if invoiceNo == invoiceNo_txt:
@@ -404,27 +410,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.log_trace("Er tilbage ved listen...")
                     
                 
-                    """
-                    
-                    i = 1
-                    while i < 5:
-                        sbar = obj_sess.findById("wnd[0]/sbar")
-                        print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                        if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
-                            break
-                        pyautogui.press('enter')
-                        time.sleep(2)
-                        i += 1
-                    
-                    sbar = obj_sess.findById("wnd[0]/sbar")
-                    print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    time.sleep(1)
-                    obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press()
-                    """
-                    #Klik Ja og Enter
-                    #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION2").press()
-                    #obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press()
    
         else:
             orchestrator_connection.log_trace("Title '"+title+ "' Opslaget gav intet resultat...")
@@ -462,5 +447,5 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         orchestrator_connection.log_trace("Workflow er genstartet og opdateret...")
         print("Workflow er genstartet og opdateret...")
 
-    
-    orchestrator_connection.log_trace("Running process - end")
+    print("Running process - end")
+    #orchestrator_connection.log_trace("Running process - end")

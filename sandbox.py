@@ -37,8 +37,8 @@ while n < 74:
     queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_ÆndreFaktura')
     process(orchestrator_connection, queue_element)
     n += 1
-if not len(globals.manuelliste) == 0:
-    lists.send_manuelliste(globals.aktuel_bogholderbakke)
+    if not len(globals.manuelliste) == 0:
+        lists.send_manuelliste(globals.aktuel_bogholderbakke)
 
 
 
