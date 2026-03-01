@@ -11,6 +11,7 @@ from robot_framework import globals
 
 def send_manuelliste(process_name):
     
+    orchestrator_connection.log_trace("Send manuelliste started...")
     x = datetime.datetime.now()
     print((x.strftime("%d-%b-%Y")))
     
@@ -42,4 +43,6 @@ def send_manuelliste(process_name):
     with smtplib.SMTP(config.SMTP_SERVER, config.SMTP_PORT) as smtp:
         smtp.starttls()
         smtp.send_message(msg)
+        
+    orchestrator_connection.log_trace("Send manuelliste ended...")
     
