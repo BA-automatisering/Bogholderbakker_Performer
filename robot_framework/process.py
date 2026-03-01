@@ -140,7 +140,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Her slettes bilaget
                     sbar = obj_sess.findById("wnd[0]/sbar")
                     print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                     time.sleep(2)
                     #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF") #Hvad sker her?
                 #time.sleep(2)
@@ -245,14 +245,14 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
                             sbar = obj_sess.findById("wnd[0]/sbar")
                             print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                            orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                            orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         else:
                             print("Korrekt faktura IKKE åbnet...")
                             orchestrator_connection.log_trace("Korrekt faktura IKKE åbnet...")
                         
                     case 2:
                         print("Kun 1 faktura - rule 2 - kø-element til Faktura Kontrol Center")
-                        orchestrator_connection.log_trace("Kun 1 faktura - rule 2 - kø-element til 'Faktura Kontrol Center' samt manuelliste")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Kun 1 faktura - rule 2 - kø-element til 'Faktura Kontrol Center' samt manuelliste")
                         #Til manuel liste
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 03 - Kontroller dob fakt",
@@ -276,7 +276,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
                     case 3:
                         print("Aarstal ikke ens - rule 3 - manuelliste - frigives ikke til Bruger... Antal bilagsdato "+str(noOfRowsBilagsdato))
-                        orchestrator_connection.log_trace("Aarstal ikke ens - rule 3 - manuelliste - frigives ikke til Bruger...")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Aarstal ikke ens - rule 3 - manuelliste - frigives ikke til Bruger...")
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 03 - Kontroller dob fakt",
                             "Fakturanr": invoiceNo,
@@ -287,7 +287,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
 
                     case 4:
                         print("Ingen rule valgt endnu... - rule 4")
-                        orchestrator_connection.log_trace("Ingen rule valgt endnu... - rule 4")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Ingen rule valgt endnu... - rule 4")
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 03 - Kontroller dob fakt",
                             "Fakturanr": invoiceNo,
@@ -341,7 +341,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
                     if len(x) < 5:
                         print("Internt bilag - slettes ikke...")
-                        orchestrator_connection.log_trace("Internt bilag - slettes ikke...")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Internt bilag - slettes ikke...")
                         #Manuelliste...
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 08 - Haandter afvist faktura",
@@ -353,10 +353,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                        orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)    
+                        orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)    
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
-                    orchestrator_connection.log_trace("Korrekt faktura IKKE åbnet... laves et nyt køelement")
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laves et nyt køelement")
                     
                     queue_items =[]
                     queue_items.append({
@@ -412,7 +412,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
                     
         else:
-            orchestrator_connection.log_trace("Title '"+title+ "' Opslaget gav intet resultat...")
+            orchestrator_connection.log_trace(str(globals.item_count)+" Title '"+title+ "' Opslaget gav intet resultat...")
             #Der skal laves en error her    
                
     else:
