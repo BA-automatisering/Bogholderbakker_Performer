@@ -5,6 +5,7 @@ import traceback
 from io import BytesIO
 import datetime
 
+from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from robot_framework import config
 from robot_framework import globals
 
