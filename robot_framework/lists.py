@@ -10,7 +10,7 @@ from robot_framework import config
 from robot_framework import globals
 
 
-def send_manuelliste(process_name):
+def send_manuelliste(orchestrator_connection: OrchestratorConnection, process_name):
     
     orchestrator_connection.log_trace("Send manuelliste started...")
     x = datetime.datetime.now()
