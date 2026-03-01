@@ -14,6 +14,7 @@ from robot_framework.exceptions import handle_error, BusinessError, log_exceptio
 from robot_framework import process
 from robot_framework import config
 from robot_framework import globals
+from robot_framework import lists
 import json
 
 

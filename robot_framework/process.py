@@ -39,7 +39,7 @@ n = 0
 # pylint: disable-next=unused-argument
 def process(orchestrator_connection: OrchestratorConnection, queue_element: QueueElement | None = None) -> None:
     """Do the primary process of the robot."""
-    orchestrator_connection.log_trace("Running process...")
+    #orchestrator_connection.log_trace("Running process...")
     
     def get_client():
         #orchestrator_connection.log_trace("get_client started...")
@@ -416,6 +416,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             #Der skal laves en error her    
                
     else:
+        obj_sess.findById("wnd[0]").maximize()
         obj_sess.findById("wnd[0]/tbar[0]/okcd").text = "ZMIR6"
         obj_sess.findById("wnd[0]/tbar[0]/btn[0]").press()
         obj_sess.findById("wnd[0]/usr/txtS_BILAG-LOW").text = invoiceNo
@@ -425,26 +426,28 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/usr/ctxtS_CPUDT-LOW").text = ""
         obj_sess.findById("wnd[0]/usr/ctxtS_CPUDT-LOW").setFocus
         obj_sess.findById("wnd[0]/usr/ctxtS_CPUDT-LOW").caretPosition = 0
-        obj_sess.findById("wnd[0]/tbar[1]/btn[8]").press()
-        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
+        obj_sess.findById("wnd[0]/tbar[1]/btn[8]").press() #Søg
+        #obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
         sbar = obj_sess.findById("wnd[0]/sbar")
         print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-        orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-        if sbar.Text == "Venligst kør program i baggrund, hvis start dato er ældre end 2 månede":
-            print("Klik Enter")
-        obj_sess.findById("wnd[0]").resizeWorkingPane(139,26,False)
+        orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+        time.sleep(1)
+        if sbar.Text.strip() == "Venligst kør program i baggrund, hvis start dato er ældre end 2 måneder":
+            pyautogui.press('enter')
+        time.sleep(2)
+        #obj_sess.findById("wnd[0]").resizeWorkingPane(139,26,False)
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").setCurrentCell(-1,"")
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").selectAll()
-        obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("EXECUTE")
+        obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("EXECUTE") #Genstartet
         obj_sess.findById("wnd[1]/usr/btnBUTTON_1").press()
-        obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("REFRESH")
+        obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("REFRESH") #Opdateret
         time.sleep(1)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
         time.sleep(1)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
     
         
-        orchestrator_connection.log_trace("Workflow er genstartet og opdateret...")
+        orchestrator_connection.log_trace(str(globals.item_count)+" Workflow er genstartet og opdateret...")
         print("Workflow er genstartet og opdateret...")
 
     print("Running process - end")
