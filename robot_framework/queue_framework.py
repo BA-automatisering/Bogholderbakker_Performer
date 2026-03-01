@@ -43,7 +43,7 @@ def main():
                 if not queue_element:
                     orchestrator_connection.log_info("Queue empty.")
                     if not len(globals.manuelliste) == 0:
-                        lists.send_manuelliste(globals.aktuel_bogholderbakke)
+                        lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
                     else:
                         orchestrator_connection.log_trace("manuel liste er tom")
                     break  # Break queue loop
