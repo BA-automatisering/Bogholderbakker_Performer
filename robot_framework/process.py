@@ -352,7 +352,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
-                        print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                        print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)    
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
@@ -410,10 +410,14 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     except:
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
+            
+            if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
+                print("start")
                     
         else:
             orchestrator_connection.log_trace(str(globals.item_count)+" Title '"+title+ "' Opslaget gav intet resultat...")
-            #Der skal laves en error her    
+            #Der skal laves en error her
+            raise BusinessError("Opslag gav intet resultat")    
                
     else:
         obj_sess.findById("wnd[0]").maximize()
