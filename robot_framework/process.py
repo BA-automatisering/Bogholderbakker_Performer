@@ -251,6 +251,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             sbar = obj_sess.findById("wnd[0]/sbar")
                             print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                            orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                         else:
                             print("Korrekt faktura IKKE åbnet...")
                             orchestrator_connection.log_trace("Korrekt faktura IKKE åbnet...")
@@ -278,6 +279,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Kun 1 faktura - frigives til bruger senere i dag")
                         
                     case 3:
                         print("Aarstal ikke ens - rule 3 - manuelliste - frigives ikke til Bruger... Antal bilagsdato "+str(noOfRowsBilagsdato))
@@ -289,6 +291,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         })
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Fakturaer er fra forskellige regnskabsår - ingen er slettet")
 
                     case 4:
                         print("Ingen rule valgt endnu... - rule 4")
