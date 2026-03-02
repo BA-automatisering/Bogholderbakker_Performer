@@ -149,25 +149,30 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select() #Gem forudregistreret bilag
                 i = 1
-                while i < 10:
+                while i < 6:
                     sbar = obj_sess.findById("wnd[0]/sbar")
                     print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                    if i == 10 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
+                    if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                         break
-                    #pyautogui.press('enter')
-                    obj_sess.findById("wnd[0]/tbar[0]/btn[15]").press() #Afslut - gul knap
-                    obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                    obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
                     time.sleep(1)
                     i += 1
-                obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
-                obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
-                obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
-
+                    
+                try:
+                    invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
+                    if invoiceNo == invoiceNo_txt:
+                        obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
+                        obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                        obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
+                except:
+                    print("Er tilbage ved listen...")
+                    #orchestrator_connection.log_trace("Er tilbage ved listen...")
                 
                 
-                sbar = obj_sess.findById("wnd[0]/sbar")
+                #sbar = obj_sess.findById("wnd[0]/sbar") #Behøves ikke her
                 print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                 orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                 time.sleep(1)
 
                 #pyautogui.press('enter')
