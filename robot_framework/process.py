@@ -90,6 +90,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     eanNr = specific_content.get("eanNr", None)
     fakturabeløb = specific_content.get("fakturabeløb", None)
     leverandør = specific_content.get("leverandør", None)
+    queue_type = specific_content.get("type", None)
+    if queue_type == None:
+        queue_type=""
     
     globals.item_count += 1
     orchestrator_connection.log_trace(str(globals.item_count)+" NEW: "+title)
@@ -365,7 +368,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)    
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)    
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
                     orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
