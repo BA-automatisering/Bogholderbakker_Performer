@@ -143,6 +143,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                     time.sleep(2)
                     #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF") #Hvad sker her?
+                    orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                 #time.sleep(2)
             
             if queue_element.queue_name=="Bogholderbakke_XML":
@@ -303,6 +304,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         })
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Ingen regel er valgt (rule 4)")
                         
                     case _:
                         print("Alt andet...")
@@ -356,6 +358,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             "Fakturanr": invoiceNo,
                             "Beskrivelse": "Internt bilag - slettes ikke"
                         })
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Internt bilag - slettes ikke...")
                     else:
                         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                         time.sleep(2)
@@ -365,7 +368,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)    
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
-                    orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laves et nyt køelement")
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
                     
                     queue_items =[]
                     queue_items.append({
