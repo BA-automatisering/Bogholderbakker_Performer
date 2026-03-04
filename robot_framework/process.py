@@ -408,6 +408,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                        Status = sbar.Text
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
                         else:
