@@ -402,6 +402,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select() #Gem forudregistreret bilag
                     Bogføringsperiode_Moms()
                     Laeg_tilbage = 0
+                    Status = ""
                     i = 1
                     time.sleep(1)
                     while i < 6:
@@ -418,6 +419,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 print("gul") #Enter
                                 sbar = obj_sess.findById("wnd[0]/sbar")
                                 print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                Status = sbar.Text
                                 orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 pyautogui.press('enter')
                                    
@@ -437,9 +439,16 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     except:
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
+                        
+                    orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
+                        
                     if Laeg_tilbage == 1:
                         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("ABCK")
                         orchestrator_connection.log_trace("Dokument lagt tilbage..")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Lagt tilbage...")
+                    else:
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, Status)
+                        
             
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                 print("start")
