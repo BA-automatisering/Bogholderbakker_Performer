@@ -401,7 +401,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     print("Korrekt åbnet...")
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[3]").select() #Gem forudregistreret bilag
                     Bogføringsperiode_Moms()
-                    
+                    Laeg_tilbage = 0
                     i = 1
                     time.sleep(1)
                     while i < 6:
@@ -411,10 +411,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             break
                         else:
                             if sbar.MessageType == "E":
-                                print("rød") #Læg tilbage
-                                sbar = obj_sess.findById("wnd[0]/sbar")
-                                print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                print("rød") #Læg tilbage - gøres når tilbage ved listen
+                                Laeg_tilbage = 1
                                 break
                             if sbar.MessageType == "W":
                                 print("gul") #Enter
@@ -428,20 +426,18 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         time.sleep(1)
                         i += 1
                     time.sleep(1)
-                    #sbar = obj_sess.findById("wnd[0]/sbar")
-                    #print("Sidste Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+
                     try:
                         invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                         if invoiceNo == invoiceNo_txt:
                             obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
                             obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
                             obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
-                            sbar = obj_sess.findById("wnd[0]/sbar")
-                            print("Er tilbage Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                            
                     except:
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
-                    if sbar.MessageType == "E":
+                    if Laeg_tilbage == 1:
                         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("ABCK")
                         orchestrator_connection.log_trace("Dokument lagt tilbage..")
             
