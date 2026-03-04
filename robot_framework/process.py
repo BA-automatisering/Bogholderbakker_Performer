@@ -119,7 +119,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             nr += 1
         id = next((p for p in data if p["title"].lower() == title.lower()), None)
         
-        if not id==None:
+        try:  # not id==None:  #skal laves som try except
             nr2 = id["no"]
             #print("Nr i liste = "+str(nr2))
             #orchestrator_connection.log_trace("Nr i liste = "+str(nr2))
@@ -407,29 +407,48 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                        #orchestrator_connection.log_trace(str(i)+" Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
-                        obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
+                        else:
+                            if sbar.MessageType == "E":
+                                print("rød") #Læg tilbage
+                                sbar = obj_sess.findById("wnd[0]/sbar")
+                                print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                break
+                            if sbar.MessageType == "W":
+                                print("gul") #Enter
+                                sbar = obj_sess.findById("wnd[0]/sbar")
+                                print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                pyautogui.press('enter')
+                                   
+                        #obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
                         Bogføringsperiode_Moms()
                         time.sleep(1)
                         i += 1
                     time.sleep(1)
-                    
+                    #sbar = obj_sess.findById("wnd[0]/sbar")
+                    #print("Sidste Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                     try:
                         invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                         if invoiceNo == invoiceNo_txt:
                             obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
                             obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
                             obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
+                            sbar = obj_sess.findById("wnd[0]/sbar")
+                            print("Er tilbage Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                     except:
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
+                    if sbar.MessageType == "E":
+                        obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("ABCK")
+                        orchestrator_connection.log_trace("Dokument lagt tilbage..")
             
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                 print("start")
                     
-        else:
+        except:
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
             #Der skal laves en error her
             raise BusinessError("Opslag gav intet resultat")    
