@@ -447,8 +447,22 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("ABCK")
                         orchestrator_connection.log_trace("Dokument lagt tilbage..")
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Lagt tilbage...")
+                        globals.manuelliste.append({
+                            "Område": "Fakturahandl.07: Ændre faktura",
+                            "Fakturanr": invoiceNo,
+                            "Beskrivelse": "Lagt tilbage..."
+                        })
                     else:
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, Status)
+                        globals.manuelliste.append({
+                            "Område": "Fakturahandl.07: Ændre faktura",
+                            "Fakturanr": invoiceNo,
+                            "Beskrivelse": Status
+                        })
+                
+                else:
+                    print("Ikke korrekt valgt")
+                    #raise fejl        
                         
             
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
