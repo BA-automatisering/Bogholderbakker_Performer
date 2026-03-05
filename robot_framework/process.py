@@ -108,7 +108,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
         except Exception as e:
-            orchestrator_connection.log_error(f"An error occurred: {e}")    
+            orchestrator_connection.log_error(f"An error occurred: {e}")
+            raise e    
         
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
         time.sleep(1)
@@ -331,7 +332,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                 obj_sess = get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
-            
+                time.sleep(1)
+                reset.kill_one(orchestrator_connection)
                 #Tjek om den korrekte er åbnet
                 container = obj_sess.findById("wnd[0]/usr/subHEADER_AND_ITEMS:SAPLMR1M:6005/subVENDOR_DATA:SAPLMR1M:6510")
                 children = container.Children
@@ -377,7 +379,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
-                        reset.kill_one(orchestrator_connection)    
+                        #reset.kill_one(orchestrator_connection)
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
                     orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
@@ -469,11 +471,36 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 
                 else:
                     print("Ikke korrekt valgt")
-                    #raise fejl        
+                    raise BusinessError("Forkert faktura valgt...")        
                         
             
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
-                print("start")
+                obj_sess = get_client()
+                obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
+                time.sleep(1)
+                invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
+                print("invoiceNo_txt "+invoiceNo_txt)
+                
+                if invoiceNo == invoiceNo_txt:
+                    #Hvis eksistere 'Afslut behandling' så klik Afbryd
+                    obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
+                    time.sleep(2)
+                    sbar = obj_sess.findById("wnd[0]/sbar")
+                    print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" "+sbar.Text)
+                    orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
+                    if not sbar.MessageType == "S":
+                        globals.manuelliste.append({
+                            "Område": "Kombit Fakturaer",
+                            "Fakturanr": invoiceNo,
+                            "Beskrivelse": "Det lykkedes ikke at slette fakturaen..."
+                        })
+                else:
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Forkert faktura valgt...")
+                    raise BusinessError("Forkert faktura valgt...")
+                            
+
+                    
                     
         except:
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
