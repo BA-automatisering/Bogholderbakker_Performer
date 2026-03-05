@@ -9,10 +9,12 @@ import re
 import json
 from collections import Counter
 from robot_framework import globals
+from robot_framework import reset
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from OpenOrchestrator.database.queues import QueueElement
 from OpenOrchestrator.database.queues import QueueStatus
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -259,6 +261,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         else:
                             print("Korrekt faktura IKKE åbnet...")
                             orchestrator_connection.log_trace("Korrekt faktura IKKE åbnet...")
+                            raise BusinessError("Forkert faktura valgt...") 
                         
                     case 2:
                         print("Kun 1 faktura - rule 2 - kø-element til Faktura Kontrol Center")
@@ -363,12 +366,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         })
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Internt bilag - slettes ikke...")
                     else:
-                        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
+                        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet Måske skal Edge lukkes efter hver sletning
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)    
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
+                        reset.kill_one(orchestrator_connection)    
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
                     orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
@@ -424,7 +428,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 pyautogui.press('enter')
                                    
-                        #obj_sess.findById("wnd[0]/tbar[0]/btn[11]").press() #Gem forudregistreret bilag - knap
                         Bogføringsperiode_Moms()
                         time.sleep(1)
                         i += 1
@@ -441,8 +444,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
                         
-                    orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
-                        
                     if Laeg_tilbage == 1:
                         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("ABCK")
                         orchestrator_connection.log_trace("Dokument lagt tilbage..")
@@ -453,6 +454,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             "Beskrivelse": "Lagt tilbage..."
                         })
                     else:
+                        orchestrator_connection.log_trace(Status)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, Status)
                         globals.manuelliste.append({
                             "Område": "Fakturahandl.07: Ændre faktura",
@@ -504,9 +506,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         time.sleep(1)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
     
-        
         orchestrator_connection.log_trace(str(globals.item_count)+" Workflow er genstartet og opdateret...")
         print("Workflow er genstartet og opdateret...")
+        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Genstartet og opdateret")
 
     print("Running process - end")
     #orchestrator_connection.log_trace("Running process - end")
