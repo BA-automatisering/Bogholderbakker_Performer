@@ -105,7 +105,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
+        try:
+            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
+        except Exception as e:
+            orchestrator_connection.log_error(f"An error occurred: {e}")    
         
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
         time.sleep(1)
