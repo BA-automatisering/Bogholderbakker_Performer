@@ -36,7 +36,11 @@ reset.open_all(orchestrator_connection)
     
 n = 1
 while n < 90:
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_ÆndreFaktura')
+
+
+
+
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_XML')
     process(orchestrator_connection, queue_element)
     n += 1
     if not len(globals.manuelliste) == 0:
