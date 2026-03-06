@@ -434,6 +434,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 Status = sbar.Text
                                 orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 pyautogui.press('enter')
+                                time.sleep(1)
                                    
                         Bogføringsperiode_Moms()
                         time.sleep(1)
@@ -475,6 +476,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
             
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
+                #msedgewebview2.exe
                 obj_sess = get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
@@ -535,6 +537,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").selectAll()
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("EXECUTE") #Genstartet
         obj_sess.findById("wnd[1]/usr/btnBUTTON_1").press()
+        time.sleep(1)
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("REFRESH") #Opdateret
         time.sleep(1)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
