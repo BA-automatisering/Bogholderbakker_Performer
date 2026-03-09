@@ -137,6 +137,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
+            time.sleep(1)
+            reset.kill_one(orchestrator_connection)
             
             if queue_element.queue_name=="Bogholderbakke_NulBeløb":
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("", "", "SAPEVENT:DECI:0001")
@@ -333,7 +335,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 obj_sess = get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
-                reset.kill_one(orchestrator_connection)
                 #Tjek om den korrekte er åbnet
                 container = obj_sess.findById("wnd[0]/usr/subHEADER_AND_ITEMS:SAPLMR1M:6005/subVENDOR_DATA:SAPLMR1M:6510")
                 children = container.Children
@@ -372,6 +373,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             "Beskrivelse": "Internt bilag - slettes ikke"
                         })
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Internt bilag - slettes ikke...")
+                        #Skiftet fra denne er vist ikke ok?
+                        
                     else:
                         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet Måske skal Edge lukkes efter hver sletning
                         time.sleep(2)
@@ -426,6 +429,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             if sbar.MessageType == "E":
                                 print("rød") #Læg tilbage - gøres når tilbage ved listen
                                 Laeg_tilbage = 1
+                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 break
                             if sbar.MessageType == "W":
                                 print("gul") #Enter
