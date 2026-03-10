@@ -138,7 +138,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
             time.sleep(1)
-            reset.kill_one(orchestrator_connection)
+            reset.kill_edge(orchestrator_connection)
             
             if queue_element.queue_name=="Bogholderbakke_NulBeløb":
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("", "", "SAPEVENT:DECI:0001")
@@ -376,7 +376,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         #Skiftet fra denne er vist ikke ok?
                         
                     else:
-                        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet Måske skal Edge lukkes efter hver sletning
+                        obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet 
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
@@ -541,11 +541,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").selectAll()
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("EXECUTE") #Genstartet
         obj_sess.findById("wnd[1]/usr/btnBUTTON_1").press()
-        time.sleep(1)
+        time.sleep(2)
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").pressToolbarButton("REFRESH") #Opdateret
-        time.sleep(1)
+        time.sleep(2)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
-        time.sleep(1)
+        time.sleep(2)
         obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press()
     
         orchestrator_connection.log_trace(str(globals.item_count)+" Workflow er genstartet og opdateret...")

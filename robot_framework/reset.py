@@ -47,7 +47,7 @@ def kill_all(orchestrator_connection: OrchestratorConnection) -> None:
     subprocess.call("taskkill /F /IM saplogon.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
     subprocess.call("taskkill /F /IM sapgui.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
-def kill_one(orchestrator_connection: OrchestratorConnection) -> None:
+def kill_edge(orchestrator_connection: OrchestratorConnection) -> None:
     """Forcefully close one application used by the robot."""
     orchestrator_connection.log_trace("Killing Edge")
 
