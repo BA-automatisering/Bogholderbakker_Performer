@@ -49,7 +49,7 @@ def kill_all(orchestrator_connection: OrchestratorConnection) -> None:
 
 def kill_edge(orchestrator_connection: OrchestratorConnection) -> None:
     """Forcefully close one application used by the robot."""
-    orchestrator_connection.log_trace("Killing Edge")
+    #orchestrator_connection.log_trace("Killing Edge")
 
     subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 

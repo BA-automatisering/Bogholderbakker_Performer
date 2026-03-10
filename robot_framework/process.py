@@ -110,7 +110,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e    
-        
+        time.sleep(1)
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
         time.sleep(1)
         nr = 0
@@ -477,8 +477,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 else:
                     print("Ikke korrekt valgt")
                     raise BusinessError("Forkert faktura valgt...")        
-                        
-            
+                                   
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                 #msedgewebview2.exe
                 obj_sess = get_client()
@@ -504,9 +503,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 else:
                     orchestrator_connection.log_trace(str(globals.item_count)+" Forkert faktura valgt...")
                     raise BusinessError("Forkert faktura valgt...")
-                            
-
-                    
                     
         except:
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
