@@ -101,10 +101,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
-    obj_sess = get_client()
+    
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
+        obj_sess = get_client()
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
