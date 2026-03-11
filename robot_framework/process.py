@@ -106,7 +106,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
         try:
-            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
+            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e    
@@ -148,7 +148,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                 if invoiceNo == invoiceNo_txt:
                     print("invoiceNo_txt "+invoiceNo_txt+" Korrekt er åbnet")
-                    obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Her slettes bilaget
+                    obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                     sbar = obj_sess.findById("wnd[0]/sbar")
                     print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                     orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
@@ -261,10 +261,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 
                         if invoiceNo == invoiceNo_txt:
                             #print("Korrekt er åbnet...")
-                            obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
+                            obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                             sbar = obj_sess.findById("wnd[0]/sbar")
                             print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                            orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                            orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                         else:
                             print("Korrekt faktura IKKE åbnet...")
@@ -326,9 +326,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
                     
-                                        
-                        
-                time.sleep(3)
+                time.sleep(2)
                 #orchestrator_connection.log_trace("Rule: "+str(rule))
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
@@ -366,7 +364,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     if len(x) < 5:
                         print("Internt bilag - slettes ikke...")
                         orchestrator_connection.log_trace(str(globals.item_count)+" Internt bilag - slettes ikke...")
-                        #Manuelliste...
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 08 - Haandter afvist faktura",
                             "Fakturanr": invoiceNo,
@@ -382,7 +379,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
-                        #reset.kill_one(orchestrator_connection)
+                        
                 else:    
                     print("Korrekt faktura IKKE åbnet...")
                     orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
@@ -393,7 +390,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         "Reference": row_data["invoiceNo"]
                     })
                     add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
-            
+                time.sleep(2)
+                
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
                 def Bogføringsperiode_Moms():
                     info = ""
