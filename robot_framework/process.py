@@ -101,11 +101,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
-    
+    obj_sess = get_client()
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        obj_sess = get_client()
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
@@ -391,7 +390,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         "Reference": row_data["invoiceNo"]
                     })
                     add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
+                
+                reset.kill_webview2(orchestrator_connection)
                 time.sleep(2)
+                
                 
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
                 def Bogføringsperiode_Moms():

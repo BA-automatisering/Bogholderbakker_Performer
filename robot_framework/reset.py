@@ -53,6 +53,12 @@ def kill_edge(orchestrator_connection: OrchestratorConnection) -> None:
 
     subprocess.call("taskkill /F /IM msedge.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 
+def kill_webview2(orchestrator_connection: OrchestratorConnection) -> None:
+    """Forcefully close one application used by the robot."""
+    #orchestrator_connection.log_trace("Killing Edge")
+
+    subprocess.call("taskkill /F /IM Msedgewebview2.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
+
 def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Open all programs used by the robot."""
     orchestrator_connection.log_trace("Opening all applications.")
