@@ -158,7 +158,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
             time.sleep(1)
-            reset.kill_edge(orchestrator_connection)
+            #reset.kill_edge(orchestrator_connection)
             
             if queue_element.queue_name=="Bogholderbakke_NulBeløb":
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("", "", "SAPEVENT:DECI:0001")
@@ -265,8 +265,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     rule = 2
                 if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar > 1 and noOfRowsTotal > 1):    
                     rule = 3
+                if (noOfRowsTotal == noOfRowsFakturaNr and noOfRowsReference == 1 and noOfRowsFakturabeloeb == 1 and noOfRowsFakturaudsteder == 1 and noOfRowsAar == 1 and not noOfRowsEAN == 1 and noOfRowsTotal > 1):
+                    rule = 4    
                 if (rule == 0):
-                    rule = 4
+                    rule = 5
                 
                 match rule:
                     case 1:
@@ -329,8 +331,20 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Fakturaer er fra forskellige regnskabsår - ingen er slettet")
 
                     case 4:
-                        print("Ingen rule valgt endnu... - rule 4")
-                        orchestrator_connection.log_trace(str(globals.item_count)+" Ingen rule valgt endnu... - rule 4")
+                        print("Forskellige EAN... - rule 4")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Forskellige EAN numre... - rule 4")
+                        globals.manuelliste.append({
+                            "Område": "Fakturabeslut 03 - Kontroller dob fakt",
+                            "Fakturanr": invoiceNo,
+                            "Beskrivelse": "Forskellige EAN numre..."
+                        })
+                        obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
+                        obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Ingen regel er valgt (rule 4)")
+                        
+                    case 5:
+                        print("Ingen rule valgt endnu... - rule 5")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Ingen rule valgt endnu... - rule 5")
                         globals.manuelliste.append({
                             "Område": "Fakturabeslut 03 - Kontroller dob fakt",
                             "Fakturanr": invoiceNo,
@@ -339,7 +353,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                         obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Ingen regel er valgt (rule 4)")
-                        
+                            
                     case _:
                         print("Alt andet...")
                         orchestrator_connection.log_trace("Alt andet...")
@@ -412,6 +426,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
                 
                 reset.kill_webview2(orchestrator_connection)
+                reset.kill_edge(orchestrator_connection)
                 time.sleep(2)
                 
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
@@ -456,7 +471,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 sbar = obj_sess.findById("wnd[0]/sbar")
                                 print("TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 Status = sbar.Text
-                                orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                                 pyautogui.press('enter')
                                 time.sleep(1)
                                    
@@ -486,7 +501,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             "Beskrivelse": "Lagt tilbage..."
                         })
                     else:
-                        orchestrator_connection.log_trace(Status)
+                        orchestrator_connection.log_trace(str(globals.item_count)+" - "+Status)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, Status)
                         globals.manuelliste.append({
                             "Område": "Fakturahandl.07: Ændre faktura",
