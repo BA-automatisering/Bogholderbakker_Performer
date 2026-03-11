@@ -171,7 +171,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                     sbar = obj_sess.findById("wnd[0]/sbar")
                     print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
                     time.sleep(2)
                     #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF") #Hvad sker her?
                     orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
@@ -397,7 +397,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
                         print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                        orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
                         
                 else:    

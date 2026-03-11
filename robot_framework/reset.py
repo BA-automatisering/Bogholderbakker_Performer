@@ -240,36 +240,6 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
             print("Kunne ikke forbinde til SAP GUI:", e)
             return None
 
-"""
-    def get_client():
-        #orchestrator_connection.log_trace("get_client started...")
-        sap_gui_auto = win32com.client.GetObject("SAPGUI")
-        if not type(sap_gui_auto) == win32com.client.CDispatch:
-            return
-
-        application = sap_gui_auto.GetScriptingEngine
-        if not type(application) == win32com.client.CDispatch:
-            sap_gui_auto = None
-            return
-
-        for conn in range(application.Children.Count):
-            # Loop through the application and get the connection
-            connection = application.Children(conn)
-
-            for sess in range(connection.Children.Count):
-                # Loop through each connection and return sessions that are on the main screen 'SESSION_MANAGER'
-                session = connection.Children(sess)
-                #print(session.Info.Transaction)
-                if session.Info.Transaction == 'SESSION_MANAGER':
-                    return session
-                else:
-                    if session.Info.Transaction == 'SBWP':
-                        return session
-                    else:
-                        # Return None and break
-                        return
-"""   
-
     def more_than_200(session, id_str):
         try:
             return session.findById(id_str)
