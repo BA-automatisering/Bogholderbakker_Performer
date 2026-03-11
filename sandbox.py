@@ -37,7 +37,7 @@ reset.open_all(orchestrator_connection)
 n = 1
 while n < 90:
 
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_HåndterAfvist')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_NulBeløb')
     process(orchestrator_connection, queue_element)
     n += 1
     if not len(globals.manuelliste) == 0:

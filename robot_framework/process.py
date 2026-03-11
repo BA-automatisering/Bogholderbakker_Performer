@@ -44,6 +44,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     #orchestrator_connection.log_trace("Running process...")
     
     def get_client():
+        """
         #orchestrator_connection.log_trace("get_client started...")
         sap_gui_auto = win32com.client.GetObject("SAPGUI")
         if not type(sap_gui_auto) == win32com.client.CDispatch:
@@ -70,7 +71,26 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     else:
                         # Return None and break
                         return
+        """
+        
+        try:
+            sap_gui_auto = win32com.client.GetObject("SAPGUI")
+            application = sap_gui_auto.GetScriptingEngine
 
+            for conn in range(application.Children.Count):
+                connection = application.Children(conn)
+
+                for sess in range(connection.Children.Count):
+                    session = connection.Children(sess)
+                    if session.Info.Transaction in ("SESSION_MANAGER", "SBWP"):
+                        return session
+
+            return None
+
+        except Exception as e:
+            print("Kunne ikke forbinde til SAP GUI:", e)
+            return None
+        
     def add_queue_items_to_queue(target, source):
         # Prepare references and data for the bulk creation function
         references = tuple(item["Reference"] for item in queue_items)  # Extract references as a tuple
