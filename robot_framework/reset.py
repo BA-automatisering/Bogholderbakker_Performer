@@ -55,7 +55,7 @@ def kill_edge(orchestrator_connection: OrchestratorConnection) -> None:
 
 def kill_webview2(orchestrator_connection: OrchestratorConnection) -> None:
     """Forcefully close one application used by the robot."""
-    #orchestrator_connection.log_trace("Killing Edge")
+    orchestrator_connection.log_trace("Killing WebView2")
 
     subprocess.call("taskkill /F /IM Msedgewebview2.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
 

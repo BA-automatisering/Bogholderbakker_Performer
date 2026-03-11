@@ -170,8 +170,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     print("invoiceNo_txt "+invoiceNo_txt+" Korrekt er åbnet")
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                     sbar = obj_sess.findById("wnd[0]/sbar")
-                    print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
+                    print("invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                     time.sleep(2)
                     #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("EREF") #Hvad sker her?
                     orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
@@ -186,8 +186,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     i = 1
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
-                        print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
-                        orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                        print("TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
+                        orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
                         pyautogui.press('enter')
@@ -206,8 +206,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
                     
                     #sbar = obj_sess.findById("wnd[0]/sbar") #Behøves ikke her
-                    print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                    orchestrator_connection.log_trace("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                    print("invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                     orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                     time.sleep(1)
                 else:
@@ -283,8 +283,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             #print("Korrekt er åbnet...")
                             obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                             sbar = obj_sess.findById("wnd[0]/sbar")
-                            print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                            orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
+                            print("invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
+                            orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                         else:
                             print("Korrekt faktura IKKE åbnet...")
@@ -396,8 +396,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet 
                         time.sleep(2)
                         sbar = obj_sess.findById("wnd[0]/sbar")
-                        print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-                        orchestrator_connection.log_trace(str(globals.item_count)+" Type: "+sbar.MessageType+" - "+sbar.Text)
+                        print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
+                        orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
                         
                 else:    
@@ -413,7 +413,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 
                 reset.kill_webview2(orchestrator_connection)
                 time.sleep(2)
-                
                 
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
                 def Bogføringsperiode_Moms():
@@ -442,7 +441,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     time.sleep(1)
                     while i < 6:
                         sbar = obj_sess.findById("wnd[0]/sbar")
-                        print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                        print("TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
                         Status = sbar.Text
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
@@ -450,14 +449,14 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             if sbar.MessageType == "E":
                                 print("rød") #Læg tilbage - gøres når tilbage ved listen
                                 Laeg_tilbage = 1
-                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                orchestrator_connection.log_trace("TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 break
                             if sbar.MessageType == "W":
                                 print("gul") #Enter
                                 sbar = obj_sess.findById("wnd[0]/sbar")
-                                print("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                print("TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 Status = sbar.Text
-                                orchestrator_connection.log_trace("Type: "+sbar.MessageType+" - Text: "+sbar.Text)
+                                orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - Text: "+sbar.Text)
                                 pyautogui.press('enter')
                                 time.sleep(1)
                                    
@@ -512,7 +511,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet
                     time.sleep(2)
                     sbar = obj_sess.findById("wnd[0]/sbar")
-                    print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+                    print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
                     orchestrator_connection.log_trace(str(globals.item_count)+" "+sbar.Text)
                     orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text)
                     if not sbar.MessageType == "S":
@@ -544,8 +543,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]/tbar[1]/btn[8]").press() #Søg
         #obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select()
         sbar = obj_sess.findById("wnd[0]/sbar")
-        print("invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
-        orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - Type: "+sbar.MessageType+" - "+sbar.Text)
+        print("invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
+        orchestrator_connection.log_trace(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
         time.sleep(1)
         if sbar.Text.strip() == "Venligst kør program i baggrund, hvis start dato er ældre end 2 måneder":
             time.sleep(1)
