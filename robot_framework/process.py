@@ -128,6 +128,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
+            """
             queue_items =[]
             queue_items.append({
                 "SpecificContent": row_data,
@@ -135,6 +136,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             })
             add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
             orchestrator_connection.log_trace("Fejler - derfor er kø-element lagt i 'Bogholderbakke_HåndterAfvist_igen'")
+            """
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e
             
