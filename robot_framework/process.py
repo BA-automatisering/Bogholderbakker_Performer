@@ -573,9 +573,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         time.sleep(1)
         if sbar.Text.strip() == "Venligst kør program i baggrund, hvis start dato er ældre end 2 måneder":
             time.sleep(1)
-            pyautogui.press('enter')
-            print("Klikket enter")
-            orchestrator_connection.log_trace("Venligst kør program i baggrund - der er klikket ENTER")
+            obj_sess.findById("wnd[0]").sendVKey(0)
+            #pyautogui.press('enter')
+            #print("Klikket enter")
+            orchestrator_connection.log_trace("Venligst kør program i baggrund - der er sendt ENTER (sendVKey(0))")
         time.sleep(2)
         #obj_sess.findById("wnd[0]").resizeWorkingPane(139,26,False)
         obj_sess.findById("wnd[0]/usr/cntlCUSTOM_CONTROL/shellcont/shell").setCurrentCell(-1,"")
