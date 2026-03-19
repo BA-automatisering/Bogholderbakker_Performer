@@ -374,6 +374,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 #orchestrator_connection.log_trace("Rule: "+str(rule))
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
+                time.sleep(1)
+                reset.kill_webview2(orchestrator_connection)
+                reset.kill_edge(orchestrator_connection)
                 obj_sess = get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
@@ -435,9 +438,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     })
                     add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
                 
-                reset.kill_webview2(orchestrator_connection)
-                reset.kill_edge(orchestrator_connection)
-                time.sleep(2)
+                #reset.kill_webview2(orchestrator_connection)
+                #reset.kill_edge(orchestrator_connection)
+                time.sleep(1)
                 
             if queue_element.queue_name=="Bogholderbakke_ÆndreFaktura":
                 def Bogføringsperiode_Moms():
