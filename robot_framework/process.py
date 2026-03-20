@@ -127,6 +127,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
+        """
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
@@ -141,9 +142,25 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             """
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e
-            
+        """
         time.sleep(1)
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+        
+        try:
+            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
+        except Exception as e:
+            """
+            queue_items =[]
+            queue_items.append({
+                "SpecificContent": row_data,
+                "Reference": row_data["invoiceNo"]
+            })
+            add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
+            orchestrator_connection.log_trace("Fejler - derfor er kø-element lagt i 'Bogholderbakke_HåndterAfvist_igen'")
+            """
+            orchestrator_connection.log_error(f"An error occurred: {e}")
+            raise e
+        
         time.sleep(1)
         nr = 0
         nr2 = -1
