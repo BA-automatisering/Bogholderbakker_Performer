@@ -3,6 +3,7 @@
 import subprocess
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from robot_framework import globals
+from robot_framework.BA_functions import get_client_func
 
 import os
 from selenium import webdriver
@@ -123,7 +124,6 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         except Exception as e:
             orchestrator_connection.log_trace("Password skal skiftes...")
             #new_password.newpass(driver,opusbruger_navn,OpusUser,OpusPassword)
-
     
     def open_SAP(driver):
         #orchestrator_connection.log_trace("open_SAP started...")
@@ -144,11 +144,10 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         time.sleep(3)
         orchestrator_connection.log_trace("SAP is open")
 
-
     def goto_bogholderbakker_i_SAP():
         #orchestrator_connection.log_trace("goto_bogholderbakker_i_SAP started...")
         time.sleep(3)
-        obj_sess = get_client()
+        obj_sess = get_client_func.get_client()
         obj_sess.findById("wnd[0]").maximize()
         obj_sess.findById("wnd[0]/usr/cntlIMAGE_CONTAINER/shellcont/shell/shellcont[0]/shell").expandNode("0000001203")
         obj_sess.findById("wnd[0]/usr/cntlIMAGE_CONTAINER/shellcont/shell/shellcont[0]/shell").selectedNode = "0000001204"
@@ -166,10 +165,10 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell").expandNode("         24")
         obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell").topNode = "          1"
 
-
     def go_to_specific_bakke():
         #orchestrator_connection.log_trace("go_to_specifik_bakkke started...")
-        obj_sess = get_client()
+        #obj_sess = get_client()
+        obj_sess = get_client_func.get_client()
         
         tree = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell")
         node_keys = tree.GetAllNodeKeys()
@@ -192,61 +191,11 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         else:
             print(f"Bogholderbakken '{globals.aktuel_bogholderbakke}' er ikke aktuel lige nu...")
 
-    def get_client():
-        """
-        #orchestrator_connection.log_trace("get_client started...")
-        sap_gui_auto = win32com.client.GetObject("SAPGUI")
-        if not type(sap_gui_auto) == win32com.client.CDispatch:
-            return
-
-        application = sap_gui_auto.GetScriptingEngine
-        if not type(application) == win32com.client.CDispatch:
-            sap_gui_auto = None
-            return
-
-        for conn in range(application.Children.Count):
-            # Loop through the application and get the connection
-            connection = application.Children(conn)
-
-            for sess in range(connection.Children.Count):
-                # Loop through each connection and return sessions that are on the main screen 'SESSION_MANAGER'
-                session = connection.Children(sess)
-                #print(session.Info.Transaction)
-                if session.Info.Transaction == 'SESSION_MANAGER':
-                    return session
-                else:
-                    if session.Info.Transaction == 'SBWP':
-                        return session
-                    else:
-                        # Return None and break
-                        return
-        """
-        
-        try:
-            sap_gui_auto = win32com.client.GetObject("SAPGUI")
-            application = sap_gui_auto.GetScriptingEngine
-
-            for conn in range(application.Children.Count):
-                connection = application.Children(conn)
-
-                for sess in range(connection.Children.Count):
-                    session = connection.Children(sess)
-                    if session.Info.Transaction in ("SESSION_MANAGER", "SBWP"):
-                        return session
-
-            return None
-
-        except Exception as e:
-            print("Kunne ikke forbinde til SAP GUI:", e)
-            return None
-
     def more_than_200(session, id_str):
         try:
             return session.findById(id_str)
         except Exception:
             return None
-
-
 
     open_RI(driver)
     time.sleep(3)

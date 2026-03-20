@@ -10,6 +10,7 @@ import json
 from collections import Counter
 from robot_framework import globals
 from robot_framework import reset
+from robot_framework.BA_functions import get_client_func
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from OpenOrchestrator.database.queues import QueueElement
@@ -121,7 +122,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
-    obj_sess = get_client()
+    #obj_sess = get_client()
+    obj_sess = get_client_func.get_client()
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
@@ -226,7 +228,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     raise BusinessError("Forkert faktura valgt...")
                     
             if queue_element.queue_name=="Bogholderbakke_DobbeltFaktura":
-                obj_sess = get_client()
+                #obj_sess = get_client()
+                obj_sess = get_client_func.get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 
                 #Træk direkte fra siden
@@ -377,7 +380,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 time.sleep(1)
                 reset.kill_webview2(orchestrator_connection)
                 reset.kill_edge(orchestrator_connection)
-                obj_sess = get_client()
+                #obj_sess = get_client()
+                obj_sess = get_client_func.get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
                 #Tjek om den korrekte er åbnet
@@ -528,7 +532,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                    
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                 #msedgewebview2.exe
-                obj_sess = get_client()
+                #obj_sess = get_client()
+                obj_sess = get_client_func.get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
                 invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
@@ -555,7 +560,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         except:
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
             #Der skal laves en error her
-            raise BusinessError("Opslag gav intet resultat")    
+            raise BusinessError("Opslag gav intet resultat") 
+        #Flyt til rigtige sted...   
                
     else:
         obj_sess.findById("wnd[0]").maximize()
