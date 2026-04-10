@@ -64,7 +64,8 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Open all programs used by the robot."""
     orchestrator_connection.log_trace("Opening all applications.")
     
-    opusbruger_navn="OpusBruger_Bog" 
+    opusbruger_navn="OpusBruger_Bog"
+    #opusbruger_navn="OpusBruger_Leif" 
     OpusLogin = orchestrator_connection.get_credential(opusbruger_navn)
     OpusUser = OpusLogin.username
     OpusPassword = OpusLogin.password
@@ -95,7 +96,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges denne linje
-    globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    #globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
 
     #Ved TEST lokalt bruges nedenstående parametre...
     #globals.aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
@@ -103,7 +104,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #globals.aktuel_bogholderbakke = "Kombit Fakturaer"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
-    #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
         
     orchestrator_connection.log_trace("Running: "+globals.aktuel_bogholderbakke)

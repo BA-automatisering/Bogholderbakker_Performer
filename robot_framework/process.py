@@ -135,6 +135,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             raise e
         """
         time.sleep(1)
+        if obj_sess == None:
+            obj_sess = get_client_func.get_client()
+            
+            
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
         
         try:
