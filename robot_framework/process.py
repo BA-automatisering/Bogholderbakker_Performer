@@ -191,6 +191,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
+
+
+
+
                         pyautogui.press('enter')
                         time.sleep(1)
                         i += 1
