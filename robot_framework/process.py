@@ -122,7 +122,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
-    #obj_sess = get_client()
     obj_sess = get_client_func.get_client()
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":

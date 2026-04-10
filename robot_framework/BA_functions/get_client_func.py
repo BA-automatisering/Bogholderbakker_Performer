@@ -18,4 +18,5 @@ def get_client():
 
     except Exception as e:
         print("Kunne ikke forbinde til SAP GUI:", e)
+        orchestrator_connection.log_error("Kunne ikke forbinde til SAP GUI:", e)
         return None
