@@ -126,32 +126,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        """
-        try:
-            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
-        except Exception as e:
-            orchestrator_connection.log_error(f"An error occurred: {e}")
-            raise e
-        """
-        time.sleep(1)
-        if obj_sess == None:
-            obj_sess = get_client_func.get_client()
-            
-            
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+        time.sleep(1)
         
         try:
             grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
         except Exception as e:
-            """
-            queue_items =[]
-            queue_items.append({
-                "SpecificContent": row_data,
-                "Reference": row_data["invoiceNo"]
-            })
-            add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
-            orchestrator_connection.log_trace("Fejler - derfor er kø-element lagt i 'Bogholderbakke_HåndterAfvist_igen'")
-            """
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e
         
@@ -170,7 +150,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         
         try:  # not id==None:  #skal laves som try except
             nr2 = id["no"]
-            #print("Nr i liste = "+str(nr2))
             #orchestrator_connection.log_trace("Nr i liste = "+str(nr2))
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
@@ -181,7 +160,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
             time.sleep(1)
-            #reset.kill_edge(orchestrator_connection)
             
             if queue_element.queue_name=="Bogholderbakke_NulBeløb":
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("", "", "SAPEVENT:DECI:0001")
