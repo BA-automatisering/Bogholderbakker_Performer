@@ -371,7 +371,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                 time.sleep(1)
-                reset.kill_webview2(orchestrator_connection)
+                #reset.kill_webview2(orchestrator_connection)
                 #reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
                 if obj_sess == None:
