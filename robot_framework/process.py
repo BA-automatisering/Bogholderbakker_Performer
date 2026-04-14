@@ -372,23 +372,26 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                 time.sleep(1)
                 reset.kill_webview2(orchestrator_connection)
-                reset.kill_edge(orchestrator_connection)
-                #obj_sess = get_client()
-                obj_sess = get_client_func.get_client()
-                obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
+                #reset.kill_edge(orchestrator_connection)
+                time.sleep(1)
+                if obj_sess == None:
+                    obj_sess = get_client_func.get_client()
+                time.sleep(1)
+                obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002") #Fortsæt til manuel bogføring eller sletning
                 time.sleep(1)
                 #Tjek om den korrekte er åbnet
                 container = obj_sess.findById("wnd[0]/usr/subHEADER_AND_ITEMS:SAPLMR1M:6005/subVENDOR_DATA:SAPLMR1M:6510")
                 children = container.Children
                 
+                """
                 for i in range(children.Count):
                     c = children.ElementAt(i)
-                    """
+                    
                     try:
                         print(i, c.Id, c.Type, getattr(c, "Text", None), getattr(c, "Tooltip", None))
                     except Exception as e:
                         print(i, c.Id, c.Type, "err:", e)
-                    """
+                """
                 
                 leverndør_txt = (children.ElementAt(1)).Text
                 if not leverandør == ("leverandør "+leverndør_txt):
