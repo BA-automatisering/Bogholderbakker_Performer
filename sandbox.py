@@ -15,7 +15,7 @@ from robot_framework import initialize
 from robot_framework import reset
 
 orchestrator_connection = OrchestratorConnection(
-    "Bogholderbakker_Performer",
+    "Bogholderbakker_Performer_sandbox",
     os.getenv("OpenOrchestratorSQL"),
     os.getenv("OpenOrchestratorKey"),
     None,
