@@ -126,8 +126,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
-        obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton ("EREF") #Opdater siden på ny måde...
+        obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+        #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton ("EREF") #Opdater siden på ny måde...
         time.sleep(1)
         
         try:
@@ -156,6 +156,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
             time.sleep(1)
             #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+            #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton ("EREF") #Opdater siden på ny måde...
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
@@ -374,7 +375,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                 time.sleep(1)
                 #reset.kill_webview2(orchestrator_connection)
-                reset.kill_edge(orchestrator_connection)
+                #reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
                 print("obj_sess= "+str(obj_sess))
                 if not str(obj_sess) == "<COMObject <unknown>>":
