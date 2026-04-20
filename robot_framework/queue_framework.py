@@ -50,8 +50,8 @@ def main():
                     break  # Break queue loop
 
                 try:
-                    sap_gui_auto = win32com.client.GetObject("SAPGUI")
-                    orchestrator_connection.log_trace("sap_gui_auto: "+str(sap_gui_auto))
+                    #sap_gui_auto = win32com.client.GetObject("SAPGUI")
+                    #orchestrator_connection.log_trace("sap_gui_auto: "+str(sap_gui_auto))
                     process.process(orchestrator_connection, queue_element)
                     orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE)
 

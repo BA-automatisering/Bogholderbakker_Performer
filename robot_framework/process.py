@@ -374,8 +374,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 #reset.kill_webview2(orchestrator_connection)
                 reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
-                if obj_sess == None:
+                if not str(obj_sess) == "<COMObject SAPGUI>":
                     obj_sess = get_client_func.get_client()
+                    orchestrator_connection.log_trace("obj_sess kaldt igen...")
                 time.sleep(1)
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002") #Fortsæt til manuel bogføring eller sletning
                 time.sleep(1)
