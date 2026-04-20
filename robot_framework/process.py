@@ -126,11 +126,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+        #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+        obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton ("EREF") #Opdater siden på ny måde...
         time.sleep(1)
         
         try:
-            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell") #Håndter afvist fryser her ved linje 109 og 112...
+            grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred: {e}")
             raise e
@@ -148,12 +149,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             nr += 1
         id = next((p for p in data if p["title"].lower() == title.lower()), None)
         
-        try:  # not id==None:  #skal laves som try except
+        try:
             nr2 = id["no"]
             #orchestrator_connection.log_trace("Nr i liste = "+str(nr2))
-            time.sleep(2)
+            time.sleep(1)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
-            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
+            time.sleep(1)
+            #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden...
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
             time.sleep(2)
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
@@ -374,7 +376,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 #reset.kill_webview2(orchestrator_connection)
                 reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
-                if not str(obj_sess) == "<COMObject SAPGUI>":
+                print("obj_sess= "+str(obj_sess))
+                if not str(obj_sess) == "<COMObject <unknown>>":
                     obj_sess = get_client_func.get_client()
                     orchestrator_connection.log_trace("obj_sess kaldt igen...")
                 time.sleep(1)
