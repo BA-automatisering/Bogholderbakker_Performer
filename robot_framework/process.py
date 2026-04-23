@@ -126,7 +126,21 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
-        obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden... denne skal benyttes
+        try:
+            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden... denne skal benyttes
+        except Exception as e:
+            orchestrator_connection.log_error(f"An error occurred: {e}")
+            if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
+                orchestrator_connection.log_trace(str(globals.item_count)+" Siden opdateres ikke... laver et nyt køelement")
+                queue_items =[]
+                queue_items.append({
+                    "SpecificContent": row_data,
+                    "Reference": row_data["invoiceNo"]
+                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist2","HåndterAvistFaktura")    
+            raise e
+        
+        
+            
         time.sleep(1)
         
         try:
@@ -558,6 +572,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
         except:
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
+            #For Håndter afvist faktura skal kø-elementet lægges op igen
             #Der skal laves en error her
             raise BusinessError("Opslag gav intet resultat") 
         #Flyt til rigtige sted...   
