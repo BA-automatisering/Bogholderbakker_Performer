@@ -132,12 +132,19 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             orchestrator_connection.log_error(f"An error occurred: {e}")
             if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
                 orchestrator_connection.log_trace(str(globals.item_count)+" Siden opdateres ikke... laver et nyt køelement")
+                row_data = {
+                        "title": title,
+                        "invoiceNo": invoiceNo,
+                        "eanNr": eanNr,
+                        "fakturabeløb": fakturabeløb,
+                        "leverandør": leverandør
+                        }
                 queue_items =[]
                 queue_items.append({
                     "SpecificContent": row_data,
                     "Reference": row_data["invoiceNo"]
                 })    
-                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist2","HåndterAvistFaktura")    
+                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_2","HåndterAvistFaktura")    
             raise e
         
         
