@@ -65,7 +65,8 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     """Open all programs used by the robot."""
     orchestrator_connection.log_trace("Opening all applications.")
     
-    opusbruger_navn="OpusBruger_Bog"
+    #opusbruger_navn="OpusBruger_Bog"
+    opusbruger_navn="Opus_Genstart_faktura"
     OpusLogin = orchestrator_connection.get_credential(opusbruger_navn)
     OpusUser = OpusLogin.username
     OpusPassword = OpusLogin.password

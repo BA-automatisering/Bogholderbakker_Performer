@@ -144,7 +144,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     "SpecificContent": row_data,
                     "Reference": row_data["invoiceNo"]
                 })    
-                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_2","HåndterAvistFaktura")    
+                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")    
             raise e
         
         
