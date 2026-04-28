@@ -146,6 +146,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")    
             raise e
+            #På hvilken side er vi når denne fejl opstår?
         
         
             
@@ -552,8 +553,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     raise BusinessError("Forkert faktura valgt...")        
                                    
             if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
-                #msedgewebview2.exe
-                #obj_sess = get_client()
+                reset.kill_edge(orchestrator_connection)
+                time.sleep(1)
                 obj_sess = get_client_func.get_client()
                 obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
                 time.sleep(1)
