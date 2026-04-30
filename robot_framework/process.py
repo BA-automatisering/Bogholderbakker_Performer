@@ -127,7 +127,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
         try:
-            orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden før start...)
+            orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden før start...")
             obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden... denne skal benyttes
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred: {e}")
