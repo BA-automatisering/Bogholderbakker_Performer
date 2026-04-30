@@ -395,7 +395,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 #orchestrator_connection.log_trace("Rule: "+str(rule))
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
-                reset.kill_webview2(orchestrator_connection)
+                #reset.kill_webview2(orchestrator_connection)
                 time.sleep(1)
                 reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
