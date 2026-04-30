@@ -2,6 +2,7 @@
 
 import subprocess
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
+from robot_framework.exceptions import BusinessError
 from robot_framework import globals
 from robot_framework.BA_functions import get_client_func
 from robot_framework.BA_functions import new_Opus_Password
@@ -188,7 +189,9 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[0]/shell").selectedNode = nr  #Her er nummer som passer med navnet
 
         else:
+            orchestrator_connection.log_trace(f"Bogholderbakken '{globals.aktuel_bogholderbakke}' er ikke aktuel lige nu...")
             print(f"Bogholderbakken '{globals.aktuel_bogholderbakke}' er ikke aktuel lige nu...")
+            raise BusinessError(f"Bogholderbakken '{globals.aktuel_bogholderbakke}' er ikke aktuel lige nu...")
 
     def more_than_200(session, id_str):
         try:

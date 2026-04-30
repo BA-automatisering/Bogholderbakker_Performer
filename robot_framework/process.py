@@ -148,9 +148,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")    
             raise e
             #På hvilken side er vi når denne fejl opstår?
-        
-        
-            
+                
         time.sleep(1)
         
         try:
@@ -171,7 +169,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             })
             nr += 1
         id = next((p for p in data if p["title"].lower() == title.lower()), None)
-        
+      
         try:
             nr2 = id["no"]
             orchestrator_connection.log_trace(str(globals.item_count)+" Nr i liste = "+str(nr2))
@@ -216,10 +214,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                         if i == 5 or (not sbar.MessageType == "E" and not sbar.MessageType == "W") :
                             break
-
-
-
-
                         pyautogui.press('enter')
                         time.sleep(1)
                         i += 1
@@ -233,7 +227,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     except:
                         print("Er tilbage ved listen...")
                         #orchestrator_connection.log_trace("Er tilbage ved listen...")
-                    
                     
                     #sbar = obj_sess.findById("wnd[0]/sbar") #Behøves ikke her
                     print("invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
@@ -395,7 +388,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 #orchestrator_connection.log_trace("Rule: "+str(rule))
                     
             if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
-                #reset.kill_webview2(orchestrator_connection)
+                #reset.kill_webview2(orchestrator_connection) #Hvis aktiv åbner og lukker Teams efter hvert kø-element
                 time.sleep(1)
                 reset.kill_edge(orchestrator_connection)
                 time.sleep(1)
