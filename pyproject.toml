@@ -16,7 +16,7 @@ classifiers = [
     "Operating System :: Microsoft :: Windows",
 ]
 dependencies = [
-    "OpenOrchestrator == 2.*",
+    "OpenOrchestrator == 3.*",
     "Pillow == 10.*",
     "Selenium == 4.38.0",
     "PyAutoGUI == 0.9.54",

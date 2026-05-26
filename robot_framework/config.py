@@ -8,6 +8,7 @@ orchestrator_connection = OrchestratorConnection(
     os.getenv("OpenOrchestratorSQL"),
     os.getenv("OpenOrchestratorKey"),
     None,
+    None,
     None
 )
 

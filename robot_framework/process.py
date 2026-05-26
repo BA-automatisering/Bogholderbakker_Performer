@@ -577,7 +577,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
             #For Håndter afvist faktura skal kø-elementet lægges op igen
             #Der skal laves en error her
-            raise BusinessError("Opslag gav intet resultat") 
+            #raise BusinessError("Opslag gav intet resultat") 
         #Flyt til rigtige sted...   
                
     else:

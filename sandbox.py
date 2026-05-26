@@ -19,6 +19,7 @@ orchestrator_connection = OrchestratorConnection(
     os.getenv("OpenOrchestratorSQL"),
     os.getenv("OpenOrchestratorKey"),
     None,
+    None,
     None
 )
 
@@ -41,7 +42,7 @@ while n < 90:
 
 
 
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_XML')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_KombitFaktura')
     process(orchestrator_connection, queue_element)
     n += 1
     if not len(globals.manuelliste) == 0:
