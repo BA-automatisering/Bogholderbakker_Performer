@@ -147,7 +147,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")    
             #raise e
-            #På hvilken side er vi når denne fejl opstår?
+            
                 
         time.sleep(1)
         
