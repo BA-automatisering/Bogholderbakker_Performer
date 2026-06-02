@@ -42,7 +42,7 @@ while n < 90:
 
 
 
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_KombitFaktura')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_FakturaKontrolCenter')
     process(orchestrator_connection, queue_element)
     n += 1
     if not len(globals.manuelliste) == 0:
