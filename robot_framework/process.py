@@ -584,8 +584,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         obj_sess.findById("wnd[0]").maximize()
         obj_sess.findById("wnd[0]/tbar[0]/okcd").text = "ZMIR6"
         obj_sess.findById("wnd[0]/tbar[0]/btn[0]").press()
-        obj_sess.findById("wnd[0]/usr/txtS_BILAG-LOW").text = ""
-        obj_sess.findById("wnd[0]/usr/txtS_BILAG-HIGH").text = invoiceNo
+        obj_sess.findById("wnd[0]/usr/txtS_BILAG-LOW").text = invoiceNo
+        obj_sess.findById("wnd[0]/usr/txtS_BILAG-HIGH").text = ""
         obj_sess.findById("wnd[0]/usr/txtS_GJAHR-LOW").text = "2026"
         obj_sess.findById("wnd[0]/usr/ctxtS_BLART-LOW").text = "RE"
         obj_sess.findById("wnd[0]/usr/ctxtS_CPUDT-LOW").text = ""
