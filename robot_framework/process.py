@@ -345,7 +345,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             })
                             obj_sess.findById("wnd[0]/tbar[0]/btn[3]").press()
                             obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0000")
-                            orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Ingen regel er valgt (rule 4)")
+                            orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Forskellige EAN numre... på manuelliste")
                             
                         case 5:
                             print("Ingen rule valgt endnu... - rule 5")
