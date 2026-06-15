@@ -384,16 +384,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     container = obj_sess.findById("wnd[0]/usr/subHEADER_AND_ITEMS:SAPLMR1M:6005/subVENDOR_DATA:SAPLMR1M:6510")
                     children = container.Children
                     
-                    """
-                    for i in range(children.Count):
-                        c = children.ElementAt(i)
-                        
-                        try:
-                            print(i, c.Id, c.Type, getattr(c, "Text", None), getattr(c, "Tooltip", None))
-                        except Exception as e:
-                            print(i, c.Id, c.Type, "err:", e)
-                    """
-                    
                     leverndør_txt = (children.ElementAt(1)).Text
                     if not leverandør == ("leverandør "+leverndør_txt):
                         leverndør_txt = (children.ElementAt(3)).Text
@@ -437,7 +427,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             "SpecificContent": row_data,
                             "Reference": row_data["invoiceNo"]
                         })
-                        add_queue_items_to_queue("Bogholderbakke_HåndterAfvist_igen","HaandterafvistFaktura")
+                        add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HaandterafvistFaktura_korrekt_ikke_åbnet")
                     
                     #reset.kill_webview2(orchestrator_connection)
                     #reset.kill_edge(orchestrator_connection)
