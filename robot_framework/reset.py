@@ -105,6 +105,10 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #globals.aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
+    
+    if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
+        globals.max_retry_count=5
+    
         
     orchestrator_connection.log_trace("Running: "+globals.aktuel_bogholderbakke)
     print("Running: "+globals.aktuel_bogholderbakke)

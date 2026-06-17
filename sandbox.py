@@ -30,7 +30,7 @@ print("sandbox started...okay")
 #specific_content = json.loads(queue_element.data)
 #queue_framework.main()
 #__main__()
-lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
+#lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 
 reset.open_all(orchestrator_connection)
 

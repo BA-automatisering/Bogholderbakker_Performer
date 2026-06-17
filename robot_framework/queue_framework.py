@@ -30,6 +30,7 @@ def main():
     queue_element = None
     error_count = 0
     task_count = 0
+    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+str(globals.max_retry_count))
     # Retry loop
     for _ in range(config.MAX_RETRY_COUNT):
         try:

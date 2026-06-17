@@ -1,3 +1,4 @@
 manuelliste = []
-aktuel_bogholderbakke = "TEST mail - slet bare"
+aktuel_bogholderbakke = ""
 item_count = 0
+max_retry_count = 3

@@ -1,4 +1,6 @@
 """This module contains configuration constants used across the framework"""
+
+"""
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 import json
 import os
@@ -11,10 +13,13 @@ orchestrator_connection = OrchestratorConnection(
     None,
     None
 )
+"""
 
+from robot_framework import globals
 
 # The number of times the robot retries on an error before terminating.
-MAX_RETRY_COUNT = 3
+#MAX_RETRY_COUNT = 3
+MAX_RETRY_COUNT = globals.max_retry_count
 
 # Whether the robot should be marked as failed if MAX_RETRY_COUNT is reached.
 FAIL_ROBOT_ON_TOO_MANY_ERRORS = True
