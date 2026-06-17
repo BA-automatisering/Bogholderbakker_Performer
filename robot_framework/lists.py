@@ -16,7 +16,7 @@ def send_manuelliste(orchestrator_connection: OrchestratorConnection, process_na
     x = datetime.datetime.now()
     print((x.strftime("%d-%b-%Y")))
     
-    to_address = "lejp@aarhus.dk"
+    to_address = "lejp@aarhus.dk, lehj@aarhus.dk"
     msg = EmailMessage()
     msg['to'] = to_address
     msg['from'] = config.LIST_SENDER
