@@ -18,6 +18,7 @@ from robot_framework import globals
 from robot_framework import lists
 import json
 import win32com.client
+from datetime import datetime
 
 
 def main():
