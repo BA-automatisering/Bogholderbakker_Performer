@@ -7,6 +7,7 @@ import sys
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 from OpenOrchestrator.database.queues import QueueStatus
+from OpenOrchestrator.common import datetime_util
 
 from robot_framework import initialize
 from robot_framework import reset
