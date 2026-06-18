@@ -117,6 +117,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     if queue_type == None:
         queue_type=""
     
+    
+    
     globals.item_count += 1
     orchestrator_connection.log_trace(str(globals.item_count)+" NEW: "+title)
     print(str(globals.item_count)+" NEW: "+title)

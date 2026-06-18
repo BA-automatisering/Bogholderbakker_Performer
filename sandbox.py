@@ -13,6 +13,8 @@ from robot_framework.process import process
 from robot_framework import queue_framework
 from robot_framework import initialize
 from robot_framework import reset
+from datetime import date, datetime
+from OpenOrchestrator.common import datetime_util
 
 orchestrator_connection = OrchestratorConnection(
     "Bogholderbakker_Performer_sandbox",
@@ -31,6 +33,10 @@ print("sandbox started...okay")
 #queue_framework.main()
 #__main__()
 #lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
+
+#globals.start = date.today()
+globals.start = datetime_util.format_datetime(datetime.today())
+print(str(globals.start))
 
 reset.open_all(orchestrator_connection)
 

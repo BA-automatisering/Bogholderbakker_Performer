@@ -48,6 +48,17 @@ def main():
                         lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
                     else:
                         orchestrator_connection.log_trace("manuel liste er tom")
+                    
+                    globals.slut = datetime_util.format_datetime(datetime.today())
+                    
+                    orchestrator_connection.log_info("START: "+str(globals.start)+" - SLUT: "+str(globals.slut))
+                    """
+                    globals.driftliste.append({
+                        "Område": globals.aktuel_bogholderbakke,
+                        "Titel": title,
+                        "Beskrivelse": "Start"
+                    })
+                    """    
                     break  # Break queue loop
 
                 try:
@@ -67,6 +78,10 @@ def main():
             error_count += 1
             handle_error(f"Process Error #{error_count}", error, queue_element, orchestrator_connection)
 
+    
+    
+    
+    
     reset.clean_up(orchestrator_connection)
     reset.close_all(orchestrator_connection)
     reset.kill_all(orchestrator_connection)
