@@ -19,9 +19,6 @@ from robot_framework import globals
 
 # The number of times the robot retries on an error before terminating.
 #MAX_RETRY_COUNT = 3
-
-if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
-    globals.max_retry_count=5
     
 MAX_RETRY_COUNT = globals.max_retry_count
 
