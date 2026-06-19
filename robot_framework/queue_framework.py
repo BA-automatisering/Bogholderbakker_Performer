@@ -40,7 +40,7 @@ def main():
     else:
         range_max_retry_count = globals.max_retry_count
             
-    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+range_max_retry_count)
+    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+str(range_max_retry_count))
     # Retry loop
     for _ in range(range_max_retry_count):
         try:
