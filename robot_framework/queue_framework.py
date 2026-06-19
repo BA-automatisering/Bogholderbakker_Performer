@@ -35,9 +35,14 @@ def main():
     queue_element = None
     error_count = 0
     task_count = 0
-    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+str(globals.max_retry_count))
+    if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
+        range_max_retry_count = 5
+    else:
+        range_max_retry_count = globals.max_retry_count
+            
+    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+range_max_retry_count)
     # Retry loop
-    for _ in range(config.MAX_RETRY_COUNT):
+    for _ in range(range_max_retry_count):
         try:
             reset.reset(orchestrator_connection)
 
