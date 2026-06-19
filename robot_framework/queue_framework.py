@@ -35,6 +35,7 @@ def main():
     queue_element = None
     error_count = 0
     task_count = 0
+    orchestrator_connection.log_trace("Hvad er bakken "+globals.aktuel_bogholderbakke)
     if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
         range_max_retry_count = 5
     else:
@@ -71,7 +72,7 @@ def main():
                     for row in queue_data_dataframe.itertuples():
                         #print(row.Index, row.data, row.message)
                         row_data = ast.literal_eval(row.data)
-                        
+                        orchestrator_connection.log_info(row.Index, row.data, row.message)
                         globals.driftliste.append({
                             "queue_name": row_data["queue_name"],
                             "status": row_data["status"],
@@ -83,18 +84,7 @@ def main():
                             "message": row_data["message"],
                             "created_by": row_data["created_by"]
                         })
-                        """
-                        try:
-                            row_data["x"] = row.message.split(";")[0]
-                        except:
-                            row_data["x"] = " "
                         
-                        try:
-                            row_data["Godkendelse"] = row.message.split(";")[1]
-                        except:
-                            row_data["Godkendelse"] = " "    
-                        prepare_to_excel.append(row_data)
-                        """
                     
                     lists.send_driftliste(orchestrator_connection, globals.aktuel_bogholderbakke)
                      

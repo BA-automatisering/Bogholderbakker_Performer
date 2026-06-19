@@ -49,9 +49,9 @@ reset.open_all(orchestrator_connection)
 
     
 n = 1
-while n < 3:
+while n < 40:
 
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_NulBeløb')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_DobbeltFaktura')
     process(orchestrator_connection, queue_element)
     n += 1
 
