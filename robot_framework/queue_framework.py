@@ -18,6 +18,7 @@ from robot_framework import globals
 from robot_framework import lists
 from robot_framework.SQL.sql_handler import SqlHandler
 
+import ast
 import json
 import win32com.client
 from datetime import datetime
