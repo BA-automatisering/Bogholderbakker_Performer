@@ -23,7 +23,8 @@ dependencies = [
     "pywin32 == 311",
     "openpyxl",
     "pywinauto",
-    "pyodbc"
+    "pyodbc",
+    "requests"
 ]
 
 [project.optional-dependencies]
