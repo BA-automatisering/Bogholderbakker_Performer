@@ -24,6 +24,7 @@ dependencies = [
     "openpyxl",
     "pywinauto",
     "pyodbc",
+    "pandas",
     "requests"
 ]
 
