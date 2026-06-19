@@ -22,7 +22,8 @@ dependencies = [
     "PyAutoGUI == 0.9.54",
     "pywin32 == 311",
     "openpyxl",
-    "pywinauto"
+    "pywinauto",
+    "pyodbc"
 ]
 
 [project.optional-dependencies]
