@@ -54,13 +54,42 @@ def main():
                     globals.slut = datetime_util.format_datetime(datetime.today())
                     
                     orchestrator_connection.log_info("START: "+str(globals.start)+" - SLUT: "+str(globals.slut))
-                    """
-                    globals.driftliste.append({
-                        "Område": globals.aktuel_bogholderbakke,
-                        "Titel": title,
-                        "Beskrivelse": "Start"
-                    })
-                    """    
+                    
+                    sql_handler = SqlHandler(orchestrator_connection)
+                    engine = sql_handler.get_engine()
+
+                    queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start)
+
+                    for row in queue_data_dataframe.itertuples():
+                        #print(row.Index, row.data, row.message)
+                        row_data = ast.literal_eval(row.data)
+                        
+                        globals.driftliste.append({
+                            "queue_name": row_data["queue_name"],
+                            "status": row_data["status"],
+                            "data": row_data["data"],
+                            "reference": row_data["reference"],
+                            "created_date": row_data["created_date"],
+                            "start_date": row_data["start_date"],
+                            "end_date": row_data["end_date"],
+                            "message": row_data["message"],
+                            "created_by": row_data["created_by"]
+                        })
+                        """
+                        try:
+                            row_data["x"] = row.message.split(";")[0]
+                        except:
+                            row_data["x"] = " "
+                        
+                        try:
+                            row_data["Godkendelse"] = row.message.split(";")[1]
+                        except:
+                            row_data["Godkendelse"] = " "    
+                        prepare_to_excel.append(row_data)
+                        """
+                    
+                    lists.send_driftliste(orchestrator_connection, globals.aktuel_bogholderbakke)
+                     
                     break  # Break queue loop
 
                 try:

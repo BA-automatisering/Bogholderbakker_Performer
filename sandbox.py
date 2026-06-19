@@ -3,6 +3,8 @@ import os
 import json
 from robot_framework import globals
 from robot_framework import lists
+from robot_framework.SQL.sql_handler import SqlHandler
+#from robot_framework.SQL import sql_handler
 
 
 from OpenOrchestrator.orchestrator_connection.connection import (
@@ -15,6 +17,7 @@ from robot_framework import initialize
 from robot_framework import reset
 from datetime import date, datetime
 from OpenOrchestrator.common import datetime_util
+from sqlalchemy import create_engine, text
 
 orchestrator_connection = OrchestratorConnection(
     "Bogholderbakker_Performer_sandbox",
@@ -38,26 +41,32 @@ print("sandbox started...okay")
 globals.start = datetime_util.format_datetime(datetime.today())
 print(str(globals.start))
 
+#sql_handler = SqlHandler(orchestrator_connection)
+#engine = sql_handler.get_engine()
+    
+#queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start)
 reset.open_all(orchestrator_connection)
 
     
 n = 1
-while n < 90:
+while n < 3:
 
-
-
-
-
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_FakturaKontrolCenter')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_NulBeløb')
     process(orchestrator_connection, queue_element)
     n += 1
+
+
+    
+    
+    
+"""    
     if not len(globals.manuelliste) == 0:
         lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 
 
 
 
-"""
+
 # -----------------------------------
 import subprocess
 

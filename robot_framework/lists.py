@@ -47,3 +47,39 @@ def send_manuelliste(orchestrator_connection: OrchestratorConnection, process_na
         
     orchestrator_connection.log_trace("Send manuelliste ended...")
     
+def send_driftliste(orchestrator_connection: OrchestratorConnection, process_name):
+    
+    orchestrator_connection.log_trace("Send driftliste started...")
+    x = datetime.datetime.now()
+    print((x.strftime("%d-%b-%Y")))
+    
+    to_address = "lejp@aarhus.dk"
+    msg = EmailMessage()
+    msg['to'] = to_address
+    msg['from'] = config.LIST_SENDER
+    msg['subject'] = f"Bogholderbakker {x.strftime("%d-%b-%Y")}: {process_name}"
+    
+    n = 0
+    header = process_name+"  "+x.strftime("%d-%b-%Y")
+    body = ""
+    while n < len(globals.driftliste):
+        body = body + "Queue_name: "+globals.driftliste[n]["queue_name"]+" - "+globals.driftliste[n]["status"]+"<br>"
+        n += 1
+    
+    html_message = f"""
+    <html>
+        <body>
+            <b>{header}</b>
+            <p>{body}</p>
+        </body>
+    </html>
+    """
+    msg.set_content("Please enable HTML to view this message.")
+    msg.add_alternative(html_message, subtype='html')
+
+    # Send message
+    with smtplib.SMTP(config.SMTP_SERVER, config.SMTP_PORT) as smtp:
+        smtp.starttls()
+        smtp.send_message(msg)
+        
+    orchestrator_connection.log_trace("Send driftliste ended...")    
