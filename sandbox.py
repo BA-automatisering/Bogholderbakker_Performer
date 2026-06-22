@@ -46,15 +46,16 @@ print(str(globals.start))
 sql_handler = SqlHandler(orchestrator_connection)
 engine = sql_handler.get_engine()
 
-globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
+globals.aktuel_Queue = "Bogholderbakke_HåndterAfvist"
 globals.start = "22-06-2026 10:10:38"
+globals.start = globals.start.split(" ")[0] + " 00:00:00"
     
 queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
 
 for row in queue_data_dataframe.itertuples():
     print(row.Index, row.data, row.message)
     row_data = ast.literal_eval(row.data)
-    orchestrator_connection.log_info(str(row.Index)+" - "+row.data+" - "+row.message)
+    #orchestrator_connection.log_info(str(row.Index)+" - "+row.data+" - "+row.message)
     globals.driftliste.append({
         "status": row.status,
         "message": row.message,

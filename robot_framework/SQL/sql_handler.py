@@ -40,7 +40,8 @@ class SqlHandler:
             WHERE queue_name = :queue AND start_date >= :start
             order by end_date desc
             """)
-        start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")    
+        start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")
+        start = start.split(" ")[0] + " 00:00:00"    
         queue_data_dataframe = pd.read_sql(
             query, 
             con=engine,

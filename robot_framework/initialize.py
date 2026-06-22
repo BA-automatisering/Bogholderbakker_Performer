@@ -11,3 +11,5 @@ def initialize(orchestrator_connection: OrchestratorConnection) -> None:
     
     globals.start = datetime_util.format_datetime(datetime.today())
     print(str(globals.start))
+    
+ 
