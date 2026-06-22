@@ -44,9 +44,10 @@ print(str(globals.start))
 sql_handler = SqlHandler(orchestrator_connection)
 engine = sql_handler.get_engine()
 
+globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
 globals.start = "22-06-2026 10:10:38"
     
-queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_bogholderbakke)
+queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
 reset.open_all(orchestrator_connection)
 
     

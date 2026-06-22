@@ -22,7 +22,7 @@ class SqlHandler:
         
         return engine
 
-    def get_queue_data(self, engine, start):
+    def get_queue_data(self, engine, start, queue):
         
         query = text("""
             SELECT
@@ -37,14 +37,14 @@ class SqlHandler:
                 ,[message]
                 ,[created_by]
             FROM [BAIT-DF-OO].[dbo].[Queues]
-            WHERE queue_name = 'Bogholderbakke_NulBeløb' AND start_date >= :start
+            WHERE queue_name = :queue AND start_date >= :start
             order by end_date desc
             """)
         start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")    
         queue_data_dataframe = pd.read_sql(
             query, 
             con=engine,
-            params={"start": start}
+            params={"start": start, "queue": queue}
         )
         
         return queue_data_dataframe
