@@ -57,7 +57,7 @@ def send_driftliste(orchestrator_connection: OrchestratorConnection, process_nam
     msg = EmailMessage()
     msg['to'] = to_address
     msg['from'] = config.LIST_SENDER
-    msg['subject'] = f"Bogholderbakker DRIFT {x.strftime("%d-%b-%Y")}: {process_name}"
+    msg['subject'] = f"DRIFT Bogholderbakker {x.strftime("%d-%b-%Y")}: {process_name}"
     
     n = 0
     header = process_name+"  "+x.strftime("%d-%b-%Y")
