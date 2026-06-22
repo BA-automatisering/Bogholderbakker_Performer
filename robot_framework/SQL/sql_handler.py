@@ -37,7 +37,7 @@ class SqlHandler:
                 ,[message]
                 ,[created_by]
             FROM [BAIT-DF-OO].[dbo].[Queues]
-            WHERE queue_name = 'Bogholderbakke_HåndterAfvist' AND start_date >= :start
+            WHERE queue_name = 'Bogholderbakke_NulBeløb' AND start_date >= :start
             order by end_date desc
             """)
         start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")    

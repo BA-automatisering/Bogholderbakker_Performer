@@ -35,9 +35,7 @@ def main():
     queue_element = None
     error_count = 0
     task_count = 0
-    orchestrator_connection.log_trace("Hvad er bakken "+globals.aktuel_bogholderbakke)
-            
-    orchestrator_connection.log_trace("MAX_RETRY_COUNT2 = "+str(globals.range_max_retry_count))
+    
     # Retry loop
     for _ in range(globals.range_max_retry_count):
         try:

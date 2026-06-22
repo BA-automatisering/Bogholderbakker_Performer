@@ -106,6 +106,22 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
     
+    match globals.aktuel_bogholderbakke:
+        case "Fakturahandl.07: Ændre faktura":
+            globals.aktuel_Queue = "Bogholderbakke_ÆndreFaktura"
+        case "Fakturabeslut.07: Inkonsistent XML":
+            globals.aktuel_Queue = "Bogholderbakke_XML"
+        case "Kombit Fakturaer":
+            globals.aktuel_Queue = "Bogholderbakke_KombitFaktura"
+        case "Fakturabeslut.03: Kontroller dob fakt":
+            globals.aktuel_Queue = "Bogholderbakke_DobbeltFaktura"
+        case "Fakturabeslut.04: Nul beløb i faktura":
+            globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
+        case "Fakturabeslut.08: Håndter afvist faktura":
+            globals.aktuel_Queue = "Bogholderbakke_HåndterAfvist"
+        case "FakturaKontrolCenter":
+            globals.aktuel_Queue = "Bogholderbakke_FakturaKontrolCenter"                
+    
     if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
         globals.range_max_retry_count = 5
     else:
