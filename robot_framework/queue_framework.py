@@ -66,7 +66,7 @@ def main():
                     for row in queue_data_dataframe.itertuples():
                         #print(row.Index, row.data, row.message)
                         row_data = ast.literal_eval(row.data)
-                        orchestrator_connection.log_info(row.Index, row.data, row.message)
+                        orchestrator_connection.log_info(row.Index+" - "+row.data+" - "+row.message)
                         globals.driftliste.append({
                             "queue_name": row["queue_name"],
                             "status": row["status"],
