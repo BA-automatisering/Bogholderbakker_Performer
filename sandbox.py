@@ -1,6 +1,7 @@
 """For testing: Run process.py like OpenOrchestrator would run it."""
 import os
 import json
+import ast
 from robot_framework import globals
 from robot_framework import lists
 from robot_framework.SQL.sql_handler import SqlHandler
@@ -38,6 +39,7 @@ print("sandbox started...okay")
 #lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 
 #globals.start = date.today()
+"""
 globals.start = datetime_util.format_datetime(datetime.today())
 print(str(globals.start))
 
@@ -48,6 +50,19 @@ globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
 globals.start = "22-06-2026 10:10:38"
     
 queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
+
+for row in queue_data_dataframe.itertuples():
+    print(row.Index, row.data, row.message)
+    row_data = ast.literal_eval(row.data)
+    orchestrator_connection.log_info(str(row.Index)+" - "+row.data+" - "+row.message)
+    globals.driftliste.append({
+        "status": row.status,
+        "message": row.message,
+        "start_date": row.start_date,
+        "created_by": row.created_by,
+        "data": row.data
+    })
+"""
 reset.open_all(orchestrator_connection)
 
     

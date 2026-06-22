@@ -66,17 +66,12 @@ def main():
                     for row in queue_data_dataframe.itertuples():
                         #print(row.Index, row.data, row.message)
                         row_data = ast.literal_eval(row.data)
-                        orchestrator_connection.log_info(row.Index+" - "+row.data+" - "+row.message)
                         globals.driftliste.append({
-                            "queue_name": row["queue_name"],
-                            "status": row["status"],
-                            "data": row["data"],
-                            "reference": row["reference"],
-                            "created_date": row["created_date"],
-                            "start_date": row["start_date"],
-                            "end_date": row["end_date"],
-                            "message": row["message"],
-                            "created_by": row["created_by"]
+                            "status": row.status,
+                            "message": row.message,
+                            "start_date": row.start_date,
+                            "created_by": row.created_by,
+                            "data": row.data
                         })
                         
                     
