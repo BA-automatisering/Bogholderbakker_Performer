@@ -36,12 +36,8 @@ def main():
     error_count = 0
     task_count = 0
     orchestrator_connection.log_trace("Hvad er bakken "+globals.aktuel_bogholderbakke)
-    if globals.aktuel_bogholderbakke == "Fakturabeslut.08: Håndter afvist faktura":
-        range_max_retry_count = 5
-    else:
-        range_max_retry_count = globals.max_retry_count
             
-    orchestrator_connection.log_trace("MAX_RETRY_COUNT = "+str(range_max_retry_count))
+    orchestrator_connection.log_trace("MAX_RETRY_COUNT2 = "+str(globals.range_max_retry_count))
     # Retry loop
     for _ in range(range_max_retry_count):
         try:
@@ -74,15 +70,15 @@ def main():
                         row_data = ast.literal_eval(row.data)
                         orchestrator_connection.log_info(row.Index, row.data, row.message)
                         globals.driftliste.append({
-                            "queue_name": row_data["queue_name"],
-                            "status": row_data["status"],
-                            "data": row_data["data"],
-                            "reference": row_data["reference"],
-                            "created_date": row_data["created_date"],
-                            "start_date": row_data["start_date"],
-                            "end_date": row_data["end_date"],
-                            "message": row_data["message"],
-                            "created_by": row_data["created_by"]
+                            "queue_name": row["queue_name"],
+                            "status": row["status"],
+                            "data": row["data"],
+                            "reference": row["reference"],
+                            "created_date": row["created_date"],
+                            "start_date": row["start_date"],
+                            "end_date": row["end_date"],
+                            "message": row["message"],
+                            "created_by": row["created_by"]
                         })
                         
                     

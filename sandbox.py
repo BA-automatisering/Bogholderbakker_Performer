@@ -15,7 +15,7 @@ from robot_framework.process import process
 from robot_framework import queue_framework
 from robot_framework import initialize
 from robot_framework import reset
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from OpenOrchestrator.common import datetime_util
 from sqlalchemy import create_engine, text
 
@@ -41,10 +41,12 @@ print("sandbox started...okay")
 globals.start = datetime_util.format_datetime(datetime.today())
 print(str(globals.start))
 
-#sql_handler = SqlHandler(orchestrator_connection)
-#engine = sql_handler.get_engine()
+sql_handler = SqlHandler(orchestrator_connection)
+engine = sql_handler.get_engine()
+
+globals.start = "19-06-2026 13:00:56"
     
-#queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start)
+queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start)
 reset.open_all(orchestrator_connection)
 
     
