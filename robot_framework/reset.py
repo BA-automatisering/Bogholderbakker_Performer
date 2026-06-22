@@ -111,7 +111,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     else:
         globals.range_max_retry_count = globals.max_retry_count
         
-    orchestrator_connection.log_trace("Running: "+globals.aktuel_bogholderbakke)
+    orchestrator_connection.log_trace("Running: "+globals.aktuel_bogholderbakke+" MAX_RETRY_COUNT: "+str(globals.range_max_retry_count))
     print("Running: "+globals.aktuel_bogholderbakke)
     
     def open_RI(driver):

@@ -39,7 +39,7 @@ def main():
             
     orchestrator_connection.log_trace("MAX_RETRY_COUNT2 = "+str(globals.range_max_retry_count))
     # Retry loop
-    for _ in range(range_max_retry_count):
+    for _ in range(globals.range_max_retry_count):
         try:
             reset.reset(orchestrator_connection)
 
