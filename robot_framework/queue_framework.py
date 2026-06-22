@@ -68,6 +68,7 @@ def main():
                         row_data = ast.literal_eval(row.data)
                         globals.driftliste.append({
                             "status": row.status,
+                            "reference": row.reference,
                             "message": row.message,
                             "start_date": row.start_date,
                             "created_by": row.created_by,
