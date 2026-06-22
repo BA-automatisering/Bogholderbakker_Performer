@@ -63,7 +63,7 @@ def send_driftliste(orchestrator_connection: OrchestratorConnection, process_nam
     header = process_name+"  "+x.strftime("%d-%b-%Y")
     body = ""
     while n < len(globals.driftliste):
-        body = body + "Queue_name: "+globals.driftliste[n]["queue_name"]+" - "+globals.driftliste[n]["status"]+"<br>"
+        body = body + globals.driftliste[n]["status"]+"\t"+globals.driftliste[n]["message"]+"\t"+globals.driftliste[n]["start_date"]+"\t"+globals.driftliste[n]["created_by"]+"\t"+globals.driftliste[n]["data"]+"<br>"
         n += 1
     
     html_message = f"""

@@ -39,6 +39,7 @@ print("sandbox started...okay")
 #lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 
 #globals.start = date.today()
+print("a"+"\t"+"B")
 """
 globals.start = datetime_util.format_datetime(datetime.today())
 print(str(globals.start))
