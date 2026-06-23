@@ -42,6 +42,7 @@ class SqlHandler:
             """)
         #start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")
         start = datetime.strptime(start, "%d-%m-%Y")
+        
         queue_data_dataframe = pd.read_sql(
             query, 
             con=engine,

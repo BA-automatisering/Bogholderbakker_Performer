@@ -1,4 +1,4 @@
-from datetime import date
+import datetime
 
 manuelliste = []
 driftliste = []
@@ -7,5 +7,4 @@ aktuel_Queue = ""
 item_count = 0
 max_retry_count = 3
 range_max_retry_count = 3
-start = date.today()
-slut = date.today()
+start = datetime.datetime.now()

@@ -2,6 +2,7 @@
 import os
 import json
 import ast
+import datetime
 from robot_framework import globals
 from robot_framework import lists
 from robot_framework.SQL.sql_handler import SqlHandler
@@ -16,7 +17,7 @@ from robot_framework.process import process
 from robot_framework import queue_framework
 from robot_framework import initialize
 from robot_framework import reset
-from datetime import date, datetime, timedelta
+#from datetime import date, datetime, timedelta
 from OpenOrchestrator.common import datetime_util
 from sqlalchemy import create_engine, text
 
@@ -39,31 +40,33 @@ print("sandbox started...okay")
 #lists.send_manuelliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 
 #globals.start = date.today()
-"""
-globals.start = datetime_util.format_datetime(datetime.today())
-print(str(globals.start))
+
+#globals.start = datetime_util.format_datetime(datetime.today())
+start = datetime.datetime.now()
+start2 = start.strftime("%d-%m-%Y")
+print(str(start))
 
 sql_handler = SqlHandler(orchestrator_connection)
 engine = sql_handler.get_engine()
 
-globals.aktuel_Queue = "Bogholderbakke_HåndterAfvist"
-globals.start = "22-06-2026 10:10:38"
-globals.start = globals.start.split(" ")[0] + " 00:00:00"
+globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
+globals.start = start2
+
     
 queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
 
 for row in queue_data_dataframe.itertuples():
-    print(row.Index, row.data, row.message)
+    #print(row.Index, row.data, row.message)
     row_data = ast.literal_eval(row.data)
-    #orchestrator_connection.log_info(str(row.Index)+" - "+row.data+" - "+row.message)
     globals.driftliste.append({
         "status": row.status,
+        "reference": row.reference,
         "message": row.message,
         "start_date": row.start_date,
         "created_by": row.created_by,
         "data": row.data
     })
-"""
+
 reset.open_all(orchestrator_connection)
 
     

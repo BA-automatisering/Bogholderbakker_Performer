@@ -54,13 +54,11 @@ def main():
                     else:
                         orchestrator_connection.log_trace("manuel liste er tom")
                     
-                    globals.slut = datetime_util.format_datetime(datetime.today())
-                    
-                    orchestrator_connection.log_info("START: "+str(globals.start)+" - SLUT: "+str(globals.slut))
-                    
                     sql_handler = SqlHandler(orchestrator_connection)
                     engine = sql_handler.get_engine()
 
+                    globals.start = globals.start.strftime("%d-%m-%Y")
+                    
                     queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
 
                     for row in queue_data_dataframe.itertuples():
