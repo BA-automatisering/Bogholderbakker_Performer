@@ -42,19 +42,19 @@ print("sandbox started...okay")
 #globals.start = date.today()
 
 #globals.start = datetime_util.format_datetime(datetime.today())
-"""
+
 start = datetime.datetime.now()
-start2 = start.strftime("%d-%m-%Y")
+start = start.strftime("%d-%m-%Y")
 print(str(start))
 
 sql_handler = SqlHandler(orchestrator_connection)
 engine = sql_handler.get_engine()
 
 globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
-globals.start = start2
+#globals.start = start2
 
     
-queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
+queue_data_dataframe = sql_handler.get_queue_data(engine, start, globals.aktuel_Queue)
 
 for row in queue_data_dataframe.itertuples():
     #print(row.Index, row.data, row.message)
@@ -67,7 +67,7 @@ for row in queue_data_dataframe.itertuples():
         "created_by": row.created_by,
         "data": row.data
     })
-"""
+
 reset.open_all(orchestrator_connection)
 
     

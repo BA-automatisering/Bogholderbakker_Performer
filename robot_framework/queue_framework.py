@@ -57,9 +57,10 @@ def main():
                     sql_handler = SqlHandler(orchestrator_connection)
                     engine = sql_handler.get_engine()
 
-                    globals.start = globals.start.strftime("%d-%m-%Y")
+                    start = datetime.datetime.now()
+                    start = start.strftime("%d-%m-%Y")
                     
-                    queue_data_dataframe = sql_handler.get_queue_data(engine, globals.start, globals.aktuel_Queue)
+                    queue_data_dataframe = sql_handler.get_queue_data(engine, start, globals.aktuel_Queue)
 
                     for row in queue_data_dataframe.itertuples():
                         #print(row.Index, row.data, row.message)
