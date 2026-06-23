@@ -42,6 +42,7 @@ print("sandbox started...okay")
 #globals.start = date.today()
 
 #globals.start = datetime_util.format_datetime(datetime.today())
+"""
 start = datetime.datetime.now()
 start2 = start.strftime("%d-%m-%Y")
 print(str(start))
@@ -66,7 +67,7 @@ for row in queue_data_dataframe.itertuples():
         "created_by": row.created_by,
         "data": row.data
     })
-
+"""
 reset.open_all(orchestrator_connection)
 
     
