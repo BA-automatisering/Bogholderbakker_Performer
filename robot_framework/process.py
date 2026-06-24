@@ -423,6 +423,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     else:    
                         print("Korrekt faktura IKKE åbnet...")
                         orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt faktura IKKE åbnet... laver et nyt køelement")
+                        orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Korrekt faktura IKKE åbnet... laver et nyt køelement")
                         
                         queue_items =[]
                         queue_items.append({
