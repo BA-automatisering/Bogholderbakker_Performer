@@ -105,6 +105,16 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         except Exception as e:
             print(f"An error occurred while adding items to the queue: {str(e)}")
         
+    def wait_for_element(session, element_id, timeout=30, interval=0.5):
+        start = time.time()
+
+        while time.time() - start < timeout:
+            try:
+                return session.findById(element_id)
+            except:
+                time.sleep(interval)
+
+        raise TimeoutError(f"Element ikke fundet inden for {timeout} sekunder: {element_id}")
     
     specific_content = json.loads(queue_element.data)
     # Assign variables from SpecificContent
@@ -135,9 +145,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             time.sleep(1)
         
             try:
-                grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
+                #Her skal wait kode på...
+                grid = wait_for_element(
+                    obj_sess,
+                    "wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell",
+                    timeout=20
+                )
+                #grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
             except Exception as e:
-                orchestrator_connection.log_error(f"An error occurred: {e}")
+                orchestrator_connection.log_error(f"An error occurred1: {e}")
                 raise e
             
             time.sleep(1)
@@ -555,7 +571,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             #Flyt til rigtige sted...   
                
         except Exception as e:
-            orchestrator_connection.log_error(f"An error occurred: {e}")
+            orchestrator_connection.log_error(f"An error occurred2: {e}")
             if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
                 orchestrator_connection.log_trace(str(globals.item_count)+" Siden opdateres ikke... laver et nyt køelement")
                 row_data = {

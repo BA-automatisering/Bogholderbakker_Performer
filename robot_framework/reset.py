@@ -94,7 +94,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     chrome_service = ChromeService()
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
-    #Ved PROD bruges denne linje
+    #Ved PROD bruges denne linje:
     globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
 
     #Ved TEST lokalt bruges nedenstående parametre...
