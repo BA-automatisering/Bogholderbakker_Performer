@@ -64,10 +64,11 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     orchestrator_connection.log_trace("Opening all applications.")
     
     opusbruger_navn="OpusBruger_Bog"
-    #opusbruger_navn="Opus_Genstart_faktura"
     OpusLogin = orchestrator_connection.get_credential(opusbruger_navn)
     OpusUser = OpusLogin.username
     OpusPassword = OpusLogin.password
+    
+    globals.Conn_string_OO_DB = orchestrator_connection.get_constant(Conn_string_OO_DB)
 
     downloads_folder="C:\\tmp"
     bakken = ''

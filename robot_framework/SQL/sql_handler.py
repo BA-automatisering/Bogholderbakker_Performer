@@ -2,7 +2,7 @@
 import pandas as pd
 from sqlalchemy import create_engine, text
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
-#from robot_framework import globals
+from robot_framework import globals
 from datetime import datetime
 
 
@@ -13,9 +13,9 @@ class SqlHandler:
 
     def get_engine(self):
         """Skaber forbindelse til OO Test db"""
-        # faelles_conn_string = self.orchestrator_connection.get_constant("Conn_string_Faellessql").value
         conn_string = (
-            "mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
+            #"mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
+            globals.Conn_string_OO_DB
         )
 
         engine = create_engine(conn_string)
