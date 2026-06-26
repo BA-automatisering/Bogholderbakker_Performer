@@ -15,7 +15,7 @@ class SqlHandler:
         """Skaber forbindelse til OO Test db"""
         conn_string = (
             #"mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
-            globals.Conn_string_OO_DB
+            globals.Conn_OO_DB
         )
 
         engine = create_engine(conn_string)
