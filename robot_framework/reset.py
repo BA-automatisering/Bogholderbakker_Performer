@@ -68,7 +68,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     OpusUser = OpusLogin.username
     OpusPassword = OpusLogin.password
     
-    globals.Conn_OO_DB = orchestrator_connection.get_constant("Conn_string_OO_DB")
+    globals.Machine_type = orchestrator_connection.get_constant("Machine_type")
 
     downloads_folder="C:\\tmp"
     bakken = ''

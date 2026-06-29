@@ -56,7 +56,7 @@ def main():
                         orchestrator_connection.log_trace("manuel liste er tom")
                     
                     sql_handler = SqlHandler(orchestrator_connection)
-                    engine = sql_handler.get_engine()
+                    engine = sql_handler.get_engine(globals.Machine_type)
 
                     run_date = datetime.datetime.now()
                     run_date = run_date.strftime("%d-%m-%Y")

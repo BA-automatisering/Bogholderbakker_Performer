@@ -11,12 +11,17 @@ class SqlHandler:
     def __init__(self, orchestrator_connection: OrchestratorConnection):
         self.orchestrator_connection = orchestrator_connection
 
-    def get_engine(self):
+    def get_engine(self, machine):
         """Skaber forbindelse til OO Test db"""
-        conn_string = (
-            #"mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
-            globals.Conn_OO_DB
-        )
+        match machine:
+            case "TEST":
+                conn_string = (
+                    "mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
+                )
+            case "PROD":    
+                conn_string = (
+                    "mssql+pyodbc://srvsqlhotel04/BAIT-DF-OO1?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server"
+                )    
 
         engine = create_engine(conn_string)
         
