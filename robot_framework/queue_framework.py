@@ -61,7 +61,7 @@ def main():
                     run_date = datetime.datetime.now()
                     run_date = run_date.strftime("%d-%m-%Y")
                     
-                    queue_data_dataframe = sql_handler.get_queue_data(engine, run_date, globals.aktuel_Queue)
+                    queue_data_dataframe = sql_handler.get_queue_data(engine, run_date, globals.aktuel_Queue, globals.Machine_type)
 
                     for row in queue_data_dataframe.itertuples():
                         #print(row.Index, row.data, row.message)

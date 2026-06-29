@@ -27,26 +27,47 @@ class SqlHandler:
         
         return engine
 
-    def get_queue_data(self, engine, start, queue):
+    def get_queue_data(self, engine, start, queue, machine):
         
-        query = text("""
-            SELECT
-                [id]
-                ,[queue_name]
-                ,[status]
-                ,[data]
-                ,[reference]
-                ,[created_date]
-                ,[start_date]
-                ,[end_date]
-                ,[message]
-                ,[created_by]
-            FROM [BAIT-DF-OO].[dbo].[Queues]
-            WHERE queue_name = :queue AND start_date >= :start
-            order by end_date desc
-            """)
+        match machine:
+            case "TEST":
+                query = text("""
+                    SELECT
+                        [id]
+                        ,[queue_name]
+                        ,[status]
+                        ,[data]
+                        ,[reference]
+                        ,[created_date]
+                        ,[start_date]
+                        ,[end_date]
+                        ,[message]
+                        ,[created_by]
+                    FROM [BAIT-DF-OO].[dbo].[Queues]
+                    WHERE queue_name = :queue AND start_date >= :start
+                    order by end_date desc
+                    """)
+            
+            case "PROD":
+                query = text("""
+                    SELECT
+                        [id]
+                        ,[queue_name]
+                        ,[status]
+                        ,[data]
+                        ,[reference]
+                        ,[created_date]
+                        ,[start_date]
+                        ,[end_date]
+                        ,[message]
+                        ,[created_by]
+                    FROM [BAIT-DF-OO1].[dbo].[Queues]
+                    WHERE queue_name = :queue AND start_date >= :start
+                    order by end_date desc
+                    """)
+            
         #start = datetime.strptime(start, "%d-%m-%Y %H:%M:%S")
-        start = datetime.strptime(start, "%d-%m-%Y")
+        start = datetime.strptime(start, "%d-%m-%Y")    
         
         queue_data_dataframe = pd.read_sql(
             query, 
