@@ -45,7 +45,11 @@ def main():
             # Queue loop
             while task_count < config.MAX_TASK_COUNT:
                 task_count += 1
-                #queue_element = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)
+                
+                if globals.item_count == 16 and globals.aktuel_bogholderbakke == "Bogholderbakke_HåndterAfvist":
+                    reset.reset(orchestrator_connection) #Tænker at der er brug for reset inden der køres videre
+                
+                #queue_element = orchestrator_connection.get_next_queue_element(config.QUEUE_NAME)    
                 queue_element = orchestrator_connection.get_next_queue_element(json.loads(orchestrator_connection.process_arguments)['aktuel_queue'])
 
                 if not queue_element:
