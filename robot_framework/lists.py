@@ -63,7 +63,7 @@ def send_driftliste(orchestrator_connection: OrchestratorConnection, process_nam
     header = process_name+"  "+x.strftime("%d-%b-%Y")
     body = ""
     while n < len(globals.driftliste):
-        body = body + "Reference: "+globals.driftliste[n]["reference"]+" - Status: "+globals.driftliste[n]["status"]+" - Message: "+globals.driftliste[n]["message"]+" - Dannet af: "+globals.driftliste[n]["created_by"]+"<br>"
+        body = body + str(n+1)+": Reference: "+str(globals.driftliste[n]["reference"])+" - Status: "+str(globals.driftliste[n]["status"])+" - Message: "+str(globals.driftliste[n]["message"])+" - Dannet af: "+str(globals.driftliste[n]["created_by"])+"<br>"
         n += 1
     
     html_message = f"""

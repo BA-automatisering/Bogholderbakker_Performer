@@ -43,22 +43,22 @@ print("sandbox started...okay")
 
 #globals.start = datetime_util.format_datetime(datetime.today())
 """
-start = datetime.datetime.now()
-start = start.strftime("%d-%m-%Y")
-print(str(start))
+globals.aktuel_Queue = "Bogholderbakke_DobbeltFaktura"
+globals.Machine_type = "TEST"
+
 
 sql_handler = SqlHandler(orchestrator_connection)
-engine = sql_handler.get_engine()
+engine = sql_handler.get_engine(globals.Machine_type)
 
-globals.aktuel_Queue = "Bogholderbakke_NulBeløb"
-#globals.start = start2
+run_date = datetime.datetime.now()
+run_date = run_date.strftime("%d-%m-%Y")
+run_date = "29-06-2026"
 
-    
-queue_data_dataframe = sql_handler.get_queue_data(engine, start, globals.aktuel_Queue)
+queue_data_dataframe = sql_handler.get_queue_data(engine, run_date, globals.aktuel_Queue, globals.Machine_type)
 
 for row in queue_data_dataframe.itertuples():
     #print(row.Index, row.data, row.message)
-    row_data = ast.literal_eval(row.data)
+    #row_data = ast.literal_eval(row.data)
     globals.driftliste.append({
         "status": row.status,
         "reference": row.reference,
@@ -67,7 +67,12 @@ for row in queue_data_dataframe.itertuples():
         "created_by": row.created_by,
         "data": row.data
     })
+    
+    
+lists.send_driftliste(orchestrator_connection, globals.aktuel_bogholderbakke)
 """
+
+
 reset.open_all(orchestrator_connection)
 
     
