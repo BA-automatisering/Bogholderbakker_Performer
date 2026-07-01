@@ -158,13 +158,16 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         pyautogui.press('enter')
         time.sleep(2)
         
+        path = "C:\\tmp\\tx.sap"
+        os.startfile(path)
+        """
         try:
             path = "C:\\Users\\"+os.getenv('TEMP').split("\\")[2]+"\\Overførsler\\tx.sap"
             os.startfile(path)
         except Exception:
             path = "C:\\Users\\"+os.getenv('TEMP').split("\\")[2]+"\\Downloads\\tx.sap"
             os.startfile(path)
-    
+        """
         time.sleep(3)
         orchestrator_connection.log_trace("SAP is open")
 
