@@ -43,7 +43,7 @@ print("sandbox started...okay")
 
 #globals.start = datetime_util.format_datetime(datetime.today())
 """
-globals.aktuel_Queue = "Bogholderbakke_DobbeltFaktura"
+globals.aktuel_Queue = "Bogholderbakke_HåndterAfvist"
 globals.Machine_type = "TEST"
 
 
@@ -52,7 +52,7 @@ engine = sql_handler.get_engine(globals.Machine_type)
 
 run_date = datetime.datetime.now()
 run_date = run_date.strftime("%d-%m-%Y")
-run_date = "29-06-2026"
+#run_date = "29-06-2026"
 
 queue_data_dataframe = sql_handler.get_queue_data(engine, run_date, globals.aktuel_Queue, globals.Machine_type)
 
@@ -70,8 +70,8 @@ for row in queue_data_dataframe.itertuples():
     
     
 lists.send_driftliste(orchestrator_connection, globals.aktuel_bogholderbakke)
-"""
 
+"""
 
 reset.open_all(orchestrator_connection)
 
