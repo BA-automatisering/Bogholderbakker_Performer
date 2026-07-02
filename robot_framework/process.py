@@ -428,7 +428,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 "Beskrivelse": "Internt bilag - slettes ikke"
                             })
                             orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Internt bilag - slettes ikke...")
-                            #Skiftet fra denne er vist ikke ok?
+                            obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
+                            obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
+                            obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
                             
                         else:
                             obj_sess.findById("wnd[0]/mbar/menu[0]/menu[6]").select() #Klik Slet 
@@ -511,6 +513,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                 obj_sess.findById("wnd[0]/tbar[0]/btn[12]").press() #Afbryd - rød knap
                                 obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Ja
                                 obj_sess.findById("wnd[1]/usr/btnSPOP-OPTION1").press() #Fortsæt
+                                
                                 
                         except:
                             print("Er tilbage ved listen...")
