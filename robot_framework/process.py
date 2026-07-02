@@ -398,6 +398,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     time.sleep(1)
                     obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002") #Fortsæt til manuel bogføring eller sletning
                     time.sleep(1)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Fortsæt til manuel bogføring eller sletning")
                     #Tjek om den korrekte er åbnet
                     container = obj_sess.findById("wnd[0]/usr/subHEADER_AND_ITEMS:SAPLMR1M:6005/subVENDOR_DATA:SAPLMR1M:6510")
                     children = container.Children
@@ -411,6 +412,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     
                     if leverandør == ("leverandør "+leverndør_txt) and invoiceNo == invoiceNo_txt:
                         print("Korrekt er åbnet...")
+                        orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt er åbnet...")
                         KreditorLinje = (children.ElementAt(0)).Text
                         KreditorLinje = KreditorLinje.split(" ")
                         x = KreditorLinje[1]
