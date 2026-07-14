@@ -98,7 +98,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges denne linje:
-    globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    #globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
 
     #Ved TEST lokalt bruges nedenstående parametre...
     #globals.aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
@@ -106,7 +106,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #globals.aktuel_bogholderbakke = "Kombit Fakturaer"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
-    #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
     
     match globals.aktuel_bogholderbakke:
@@ -155,19 +155,21 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         driver.find_element(By.XPATH, '//div[@class="TabText_SmallTabs" and text()="Mine Genveje"]').click()
                 
         time.sleep(2)
+
         pyautogui.press('enter')
         time.sleep(2)
-        
+        """
         path = "C:\\tmp\\tx.sap"
         os.startfile(path)
         """
+        
         try:
             path = "C:\\Users\\"+os.getenv('TEMP').split("\\")[2]+"\\Overførsler\\tx.sap"
             os.startfile(path)
         except Exception:
             path = "C:\\Users\\"+os.getenv('TEMP').split("\\")[2]+"\\Downloads\\tx.sap"
             os.startfile(path)
-        """
+        
         time.sleep(3)
         orchestrator_connection.log_trace("SAP is open")
 
