@@ -34,6 +34,9 @@ import win32clipboard
 import win32gui
 import win32con
 import win32api
+import multiprocessing
+import pythoncom
+
 
 from robot_framework.exceptions import BusinessError
 
@@ -45,34 +48,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     #orchestrator_connection.log_trace("Running process...")
     
     def get_client():
-        """
-        #orchestrator_connection.log_trace("get_client started...")
-        sap_gui_auto = win32com.client.GetObject("SAPGUI")
-        if not type(sap_gui_auto) == win32com.client.CDispatch:
-            return
-
-        application = sap_gui_auto.GetScriptingEngine
-        if not type(application) == win32com.client.CDispatch:
-            sap_gui_auto = None
-            return
-
-        for conn in range(application.Children.Count):
-            # Loop through the application and get the connection
-            connection = application.Children(conn)
-
-            for sess in range(connection.Children.Count):
-                # Loop through each connection and return sessions that are on the main screen 'SESSION_MANAGER'
-                session = connection.Children(sess)
-                #print(session.Info.Transaction)
-                if session.Info.Transaction == 'SESSION_MANAGER':
-                    return session
-                else:
-                    if session.Info.Transaction == 'SBWP':
-                        return session
-                    else:
-                        # Return None and break
-                        return
-        """
         
         try:
             sap_gui_auto = win32com.client.GetObject("SAPGUI")
@@ -139,23 +114,22 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
         try:
-            orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden før start...")
-            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater siden... denne skal benyttes
-            
+            #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
+            obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = "0"
+            obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
+
             time.sleep(1)
-        
+            #orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden er klikket...")
             try:
-                #Her skal wait kode på...
                 grid = wait_for_element(
                     obj_sess,
                     "wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell",
                     timeout=20
                 )
-                #grid = obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell")
             except Exception as e:
                 orchestrator_connection.log_error(f"An error occurred1: {e}")
-                raise e
-            
+                raise
+                
             time.sleep(1)
             nr = 0
             nr2 = -1
@@ -181,7 +155,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 time.sleep(2)
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
                 time.sleep(1)
-                #sæt siden i front??
+                
                 
                 if queue_element.queue_name=="Bogholderbakke_NulBeløb":
                     obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("", "", "SAPEVENT:DECI:0001")

@@ -10,7 +10,6 @@ import random
 import string
 import time
 
-
 def newpass(orchestrator_connection,driver,bruger_navn: str,OpusUser: str,old_password: str):
     print('Trying to find change button')
     WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "changeButton")))

@@ -134,7 +134,6 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     print("Running: "+globals.aktuel_bogholderbakke)
     
     def open_RI(driver):
-        #orchestrator_connection.log_trace("open_RI started...")
         driver.get("https://portal.kmd.dk/irj/portal")
         WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "logonuidfield")))
         driver.maximize_window()
@@ -144,10 +143,13 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         try:
             time.sleep(3)
             driver.find_element(By.CLASS_NAME, "button_inner")
-            #orchestrator_connection.log_trace("Logged in okay")
         except Exception as e:
-            orchestrator_connection.log_trace("Password skal skiftes...")
-            new_Opus_Password.newpass(orchestrator_connection,driver,opusbruger_navn,OpusUser,OpusPassword)
+            x = driver.find_element(By.ID, "changeButton")
+            if x:
+                orchestrator_connection.log_trace("Password skal skiftes...")
+                new_Opus_Password.newpass(orchestrator_connection,driver,opusbruger_navn,OpusUser,OpusPassword)
+            else:
+                orchestrator_connection.log_trace("Ikke logget ind, men heller ikke skift af password")    
     
     def open_SAP(driver):
         #orchestrator_connection.log_trace("open_SAP started...")
@@ -155,6 +157,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
         driver.find_element(By.XPATH, '//div[@class="TabText_SmallTabs" and text()="Mine Genveje"]').click()
                 
         time.sleep(2)
+
 
         pyautogui.press('enter')
         time.sleep(2)
