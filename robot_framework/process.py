@@ -91,6 +91,40 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
 
         raise TimeoutError(f"Element ikke fundet inden for {timeout} sekunder: {element_id}")
     
+    def press_sap_button(obj_sess, button="APRO", timeout=20):
+        grid_id = (
+            "wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/"
+            "shellcont[1]/shell/shellcont[0]/shell"
+        )
+
+        start = time.monotonic()
+        last_error = None
+
+        while time.monotonic() - start < timeout:
+            try:
+                # Vent på at SAP ikke er optaget
+                if obj_sess.Busy:
+                    time.sleep(0.5)
+                    continue
+
+                # Find tabellen igen
+                #grid = obj_sess.findById(grid_id)
+
+                # Tryk på knappen
+                grid.pressToolbarButton(button)
+
+                return True
+
+            except Exception as e:
+                last_error = e
+                time.sleep(0.5)
+
+        raise TimeoutError(
+            f"Kunne ikke trykke på SAP-knappen '{button}' "
+            f"inden for {timeout} sekunder. "
+            f"Sidste fejl: {last_error}"
+        )
+    
     specific_content = json.loads(queue_element.data)
     # Assign variables from SpecificContent
     invoiceNo = specific_content.get("invoiceNo", None)
@@ -152,8 +186,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
                 time.sleep(2)
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
-                time.sleep(2)
-                obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
+                
+                press_sap_button(obj_sess, "APRO", timeout=20)
+                #time.sleep(2)
+                #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
                 time.sleep(1)
                 
                 
@@ -365,7 +401,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     time.sleep(1)
                     reset.kill_edge(orchestrator_connection)
                     time.sleep(1)
-                    print("obj_sess= "+str(obj_sess))
+                    #print("obj_sess= "+str(obj_sess))
                     if not str(obj_sess) == "<COMObject <unknown>>":
                         obj_sess = get_client_func.get_client()
                         orchestrator_connection.log_trace("obj_sess kaldt igen...")
@@ -413,6 +449,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
+                            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
                             
                     else:    
                         print("Korrekt faktura IKKE åbnet...")
