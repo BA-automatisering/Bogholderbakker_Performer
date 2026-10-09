@@ -449,8 +449,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                             print(str(globals.item_count)+" invoiceNo: "+invoiceNo+" - TYPE: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.log_trace(str(globals.item_count)+" TYPE: "+sbar.MessageType+" - "+sbar.Text)
                             orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, sbar.Text+" "+queue_type)
-                            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
-                            orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
                             
                     else:    
                         print("Korrekt faktura IKKE åbnet...")
@@ -646,5 +644,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         print("Workflow er genstartet og opdateret...")
         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Genstartet og opdateret")
 
+    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
+    orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
+    
     print("Running process - end")
     #orchestrator_connection.log_trace("Running process - end")
