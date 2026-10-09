@@ -580,10 +580,9 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
             except:
                 orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
-                #For Håndter afvist faktura skal kø-elementet lægges op igen
+                #For Håndter afvist faktura skal kø-elementet lægges op igen?
                 #Der skal laves en error her
                 #raise BusinessError("Opslag gav intet resultat") 
-            #Flyt til rigtige sted...   
                
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred2: {e}")
@@ -603,8 +602,11 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")    
                 raise e
-                    
+    
+        obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
+        orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")                
     else:
+        #FakturaKontrolCenter
         obj_sess.findById("wnd[0]").maximize()
         obj_sess.findById("wnd[0]/tbar[0]/okcd").text = "ZMIR6"
         obj_sess.findById("wnd[0]/tbar[0]/btn[0]").press()
@@ -644,8 +646,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         print("Workflow er genstartet og opdateret...")
         orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Genstartet og opdateret")
 
-    obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
-    orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
+    
     
     print("Running process - end")
     #orchestrator_connection.log_trace("Running process - end")
