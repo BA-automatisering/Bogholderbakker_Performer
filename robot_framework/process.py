@@ -79,6 +79,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             orchestrator_connection.log_info(f"Successfully added {len(queue_items)} items to the queue.")
         except Exception as e:
             print(f"An error occurred while adding items to the queue: {str(e)}")
+            orchestrator_connection.log_error(f"An error occurred while adding items to the queue: {str(e)}")
         
     def wait_for_element(session, element_id, timeout=30, interval=0.5):
         start = time.time()
@@ -619,7 +620,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
                 """
-                raise e
+            raise e
     
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
         orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")                
