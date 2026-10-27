@@ -23,8 +23,8 @@ from sqlalchemy import create_engine, text
 
 orchestrator_connection = OrchestratorConnection(
     "Bogholderbakker_Performer_sandbox",
-    os.getenv("OpenOrchestratorSQL_prod"),
-    os.getenv("OpenOrchestratorKey_prod"),
+    os.getenv("OpenOrchestratorSQL"),
+    os.getenv("OpenOrchestratorKey"),
     None,
     None,
     None
@@ -80,7 +80,7 @@ n = 1
 while n < 40:
 
 
-    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_NulBeløb')
+    queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_HåndterAfvist')
     process(orchestrator_connection, queue_element)
     n += 1
 

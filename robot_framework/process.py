@@ -126,7 +126,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             f"Sidste fejl: {last_error}"
         )
     
-    def new_queue_element(title, invoiceNo, eanNr, fakturabeløb, leverandør, from_process):
+    def new_queue_element(title, invoiceNo, eanNr, fakturabeløb, leverandør):
         row_data = {
             "title": title,
             "invoiceNo": invoiceNo,
@@ -134,12 +134,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             "fakturabeløb": fakturabeløb,
             "leverandør": leverandør
         }
-        queue_items =[]
-        queue_items.append({
+        globals.queue_items = []
+        globals.queue_items.append({
             "SpecificContent": row_data,
             "Reference": row_data["invoiceNo"]
-        })    
-        add_queue_items_to_queue("Bogholderbakke_HåndterAfvist", from_process)
+        }) 
+        print("lsdjfs")   
+        
     
     specific_content = json.loads(queue_element.data)
     # Assign variables from SpecificContent
@@ -596,16 +597,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
             except:
                 orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
-                if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
-                    new_queue_element(title, invoiceNo, eanNr, fakturabeløb, leverandør, "HåndterAvistFaktura")
                 raise BusinessError("Opslag gav intet resultat") 
-               
+                
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred2: {e}")
             if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
-                new_queue_element(title, invoiceNo, eanNr, fakturabeløb, leverandør, "HåndterAvistFaktura")
-                """
-                orchestrator_connection.log_trace(str(globals.item_count)+" Siden opdateres ikke... laver et nyt køelement")
+                orchestrator_connection.log_error(str(globals.item_count)+" "+f"An error occurred2: {e}"+"... laver et nyt køelement")
                 row_data = {
                         "title": title,
                         "invoiceNo": invoiceNo,
@@ -613,13 +610,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         "fakturabeløb": fakturabeløb,
                         "leverandør": leverandør
                         }
-                queue_items =[]
+                queue_items = []
                 queue_items.append({
                     "SpecificContent": row_data,
                     "Reference": row_data["invoiceNo"]
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
-                """
+                
             raise e
     
         obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater

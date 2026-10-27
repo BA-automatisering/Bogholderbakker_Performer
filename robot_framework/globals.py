@@ -8,3 +8,4 @@ item_count = 0
 max_retry_count = 3
 range_max_retry_count = 3
 Machine_type = ""
+queue_items = []
