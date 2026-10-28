@@ -119,6 +119,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             except Exception as e:
                 last_error = e
                 time.sleep(0.5)
+                orchestrator_connection.log_error(f"Kunne ikke trykke på SAP-knappen '{button}' " + f"inden for {timeout} sekunder. " + f"Sidste fejl: {last_error}")
 
         raise TimeoutError(
             f"Kunne ikke trykke på SAP-knappen '{button}' "
