@@ -201,9 +201,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").currentCellColumn = "WI_TEXT"
                 time.sleep(1)
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = nr2
-                time.sleep(2)
+                time.sleep(1)
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
-                
+                time.sleep(1)
+                orchestrator_connection.log_trace(str(globals.item_count)+" Er valgt, men ikke åbnet"
                 press_sap_button(obj_sess, "APRO", timeout=20)
                 
                 #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
