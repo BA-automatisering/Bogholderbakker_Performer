@@ -618,9 +618,12 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
                 
             raise e
-    
-        obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
-        orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")                
+        try:
+            obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
+            orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
+        except Exception as e:
+            orchestrator_connection.log_error(f"An error occurred3: {e}")
+            raise e
     else:
         #FakturaKontrolCenter
         obj_sess.findById("wnd[0]").maximize()
