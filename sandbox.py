@@ -77,7 +77,7 @@ reset.open_all(orchestrator_connection)
 
     
 n = 1
-while n < 40:
+while n < 50:
 
 
     queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_HåndterAfvist')

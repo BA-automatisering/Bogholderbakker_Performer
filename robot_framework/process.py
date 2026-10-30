@@ -600,7 +600,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         
             except:
                 orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
-                raise BusinessError("Opslag gav intet resultat") 
+                orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Opslaget gav intet resultat... Title "+title)
+                #raise BusinessError("Opslag gav intet resultat") 
                 
         except Exception as e:
             orchestrator_connection.log_error(f"An error occurred2: {e}")
@@ -619,13 +620,14 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     "Reference": row_data["invoiceNo"]
                 })    
                 add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
+                orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Fejler... laver et nyt køelement")
                 
-            raise e
+            #raise e
         try:
             obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
             orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
         except Exception as e:
-            orchestrator_connection.log_error(f"An error occurred3: {e}")
+            orchestrator_connection.log_error(f"An error occurred3: {e} - SAP er lukket ned!")
             raise e
     else:
         #FakturaKontrolCenter
