@@ -90,6 +90,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             except:
                 time.sleep(interval)
 
+        orchestrator_connection.log_error(f"Element ikke fundet inden for {timeout} sekunder: {element_id}")
         raise TimeoutError(f"Element ikke fundet inden for {timeout} sekunder: {element_id}")
     
     def press_sap_button(obj_sess, button="APRO", timeout=20):
@@ -180,7 +181,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     timeout=20
                 )
             except Exception as e:
-                orchestrator_connection.log_error(f"An error occurred1: {e}")
+                orchestrator_connection.log_error(f"Fejltype: {type(e).__name__}"+" "+f"Fejlbeskrivelse: {e}")
                 raise
                 
             time.sleep(1)
@@ -440,7 +441,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     invoiceNo_txt = obj_sess.findById("wnd[0]/usr/txtRBKPV-BELNR").Text
                     print("invoiceNo_txt "+invoiceNo_txt)
                     
-                    if leverandør == ("leverandør "+leverndør_txt) and invoiceNo == invoiceNo_txt:
+                    #if leverandør == ("leverandør "+leverndør_txt) and invoiceNo == invoiceNo_txt:
+                    if (leverndør_txt.count(leverandør[11:])>0) and invoiceNo == invoiceNo_txt:
                         print("Korrekt er åbnet...")
                         orchestrator_connection.log_trace(str(globals.item_count)+" Korrekt er åbnet...")
                         KreditorLinje = (children.ElementAt(0)).Text
@@ -598,12 +600,13 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                         orchestrator_connection.log_trace(str(globals.item_count)+" Forkert faktura valgt...")
                         raise BusinessError("Forkert faktura valgt...")
                         
-            except:
+            except Exception as e:
                 orchestrator_connection.log_trace(str(globals.item_count)+" Opslaget gav intet resultat... Title "+title)
-                orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Opslaget gav intet resultat... Title "+title)
-                #raise BusinessError("Opslag gav intet resultat") 
+                #orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Opslaget gav intet resultat... Title "+title)
+                raise BusinessError("Opslag gav intet resultat") #fejlen sendes videre til linje 608
                 
         except Exception as e:
+            orchestrator_connection.log_error(f"Er sendt videre "+"Fejltype: {type(e).__name__}"+" "+f"Fejlbeskrivelse: {e}")
             orchestrator_connection.log_error(f"An error occurred2: {e}")
             if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
                 orchestrator_connection.log_error(str(globals.item_count)+" "+f"An error occurred2: {e}"+"... laver et nyt køelement")
@@ -624,6 +627,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 
             #raise e
         try:
+            time.sleep(1)
             obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
             orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
         except Exception as e:
