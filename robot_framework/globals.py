@@ -9,4 +9,4 @@ max_retry_count = 3
 range_max_retry_count = 3
 Machine_type = ""
 queue_items = []
-new_element_no = 0
+new_element_no = 1

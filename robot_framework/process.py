@@ -608,24 +608,25 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
         except Exception as e:
             orchestrator_connection.log_error(f"Er sendt videre "+"Fejltype: {type(e).__name__}"+" "+f"Fejlbeskrivelse: {e}")
             orchestrator_connection.log_error(f"An error occurred2: {e}")
-            if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura" and globals.new_element_no<3:
-                orchestrator_connection.log_error(str(globals.item_count)+" "+f"An error occurred2: {e}"+"... laver et nyt køelement")
-                row_data = {
-                        "title": title,
-                        "invoiceNo": invoiceNo,
-                        "eanNr": eanNr,
-                        "fakturabeløb": fakturabeløb,
-                        "leverandør": leverandør
-                        }
-                queue_items = []
-                queue_items.append({
-                    "SpecificContent": row_data,
-                    "Reference": row_data["invoiceNo"]
-                })    
-                add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
-                orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Fejler... laver et nyt køelement "+str(globals.new_element_no))
-                globals.new_element_no += 1
-            #raise e
+            if globals.aktuel_bogholderbakke=="Fakturabeslut.08: Håndter afvist faktura":
+                if globals.new_element_no<4:
+                    orchestrator_connection.log_error(str(globals.item_count)+" "+f"An error occurred2: {e}"+"... laver et nyt køelement")
+                    row_data = {
+                            "title": title,
+                            "invoiceNo": invoiceNo,
+                            "eanNr": eanNr,
+                            "fakturabeløb": fakturabeløb,
+                            "leverandør": leverandør
+                            }
+                    queue_items = []
+                    queue_items.append({
+                        "SpecificContent": row_data,
+                        "Reference": row_data["invoiceNo"]
+                    })    
+                    add_queue_items_to_queue("Bogholderbakke_HåndterAfvist","HåndterAvistFaktura")
+                    orchestrator_connection.set_queue_element_status(queue_element.id, QueueStatus.DONE, "Fejler... nyt køelement er lavet "+str(globals.new_element_no))
+                    globals.new_element_no += 1
+            
         try:
             time.sleep(1)
             obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
