@@ -80,6 +80,7 @@ n = 1
 while n < 50:
 
 
+
     queue_element = orchestrator_connection.get_next_queue_element('Bogholderbakke_HåndterAfvist')
     process(orchestrator_connection, queue_element)
     n += 1
