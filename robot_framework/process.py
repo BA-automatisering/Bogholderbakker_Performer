@@ -47,25 +47,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     """Do the primary process of the robot."""
     #orchestrator_connection.log_trace("Running process...")
     
-    def get_client():
-        
-        try:
-            sap_gui_auto = win32com.client.GetObject("SAPGUI")
-            application = sap_gui_auto.GetScriptingEngine
-
-            for conn in range(application.Children.Count):
-                connection = application.Children(conn)
-
-                for sess in range(connection.Children.Count):
-                    session = connection.Children(sess)
-                    if session.Info.Transaction in ("SESSION_MANAGER", "SBWP"):
-                        return session
-
-            return None
-
-        except Exception as e:
-            print("Kunne ikke forbinde til SAP GUI:", e)
-            return None
         
     def add_queue_items_to_queue(target, source):
         # Prepare references and data for the bulk creation function
@@ -110,7 +91,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     continue
 
                 # Find tabellen igen
-                #grid = obj_sess.findById(grid_id)
+                grid = obj_sess.findById(grid_id) #Aktiveret igen 04-11-2026
 
                 # Tryk på knappen
                 grid.pressToolbarButton(button)
@@ -128,21 +109,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             f"Sidste fejl: {last_error}"
         )
     
-    def new_queue_element(title, invoiceNo, eanNr, fakturabeløb, leverandør):
-        row_data = {
-            "title": title,
-            "invoiceNo": invoiceNo,
-            "eanNr": eanNr,
-            "fakturabeløb": fakturabeløb,
-            "leverandør": leverandør
-        }
-        globals.queue_items = []
-        globals.queue_items.append({
-            "SpecificContent": row_data,
-            "Reference": row_data["invoiceNo"]
-        }) 
-        print("lsdjfs")   
-        
     
     specific_content = json.loads(queue_element.data)
     # Assign variables from SpecificContent
@@ -162,8 +128,6 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
     print(str(globals.item_count)+" NEW: "+title)
     time.sleep(1)
     
-    #obj_sess = get_client_func.get_client()
-    
     if not globals.aktuel_bogholderbakke == "FakturaKontrolCenter":
         time.sleep(1)
         try:
@@ -171,7 +135,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = "0"
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
-
+            
             time.sleep(1)
             #orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden er klikket...")
             try:
