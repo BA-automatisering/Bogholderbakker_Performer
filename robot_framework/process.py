@@ -88,6 +88,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 # Vent på at SAP ikke er optaget
                 if obj_sess.Busy:
                     time.sleep(0.5)
+                    print("Busy")
                     continue
 
                 # Find tabellen igen
@@ -95,6 +96,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
 
                 # Tryk på knappen
                 grid.pressToolbarButton(button)
+                print("Tryk på knappen")
 
                 return True
 
@@ -102,6 +104,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 last_error = e
                 time.sleep(0.5)
                 orchestrator_connection.log_error(f"Kunne ikke trykke på SAP-knappen '{button}' " + f"inden for {timeout} sekunder. " + f"Sidste fejl: {last_error}")
+                print((f"Kunne ikke trykke på SAP-knappen '{button}' " + f"inden for {timeout} sekunder. " + f"Sidste fejl: {last_error}"))
 
         raise TimeoutError(
             f"Kunne ikke trykke på SAP-knappen '{button}' "
@@ -171,7 +174,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 time.sleep(1)
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
                 time.sleep(1)
-                orchestrator_connection.log_trace(str(globals.item_count)+" Er valgt, men ikke åbnet")
+                orchestrator_connection.log_trace(str(globals.item_count)+" Er valgt, men endnu ikke åbnet")
                 press_sap_button(obj_sess, "APRO", timeout=20)
                 
                 #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
@@ -382,14 +385,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     #orchestrator_connection.log_trace("Rule: "+str(rule))
                         
                 if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
-                    #reset.kill_webview2(orchestrator_connection) #Hvis aktiv åbner og lukker Teams efter hvert kø-element
-                    time.sleep(1)
                     reset.kill_edge(orchestrator_connection)
                     time.sleep(1)
+                    reset.kill_webview2(orchestrator_connection) #Hvis aktiv åbner og lukker Teams efter hvert kø-element
+                    time.sleep(1)
+                    obj_sess = get_client_func.get_client()
                     #print("obj_sess= "+str(obj_sess))
-                    if not str(obj_sess) == "<COMObject <unknown>>":
-                        obj_sess = get_client_func.get_client()
-                        orchestrator_connection.log_trace("obj_sess kaldt igen...")
+                    #if not str(obj_sess) == "<COMObject <unknown>>":
+                    #    obj_sess = get_client_func.get_client()
+                    #    orchestrator_connection.log_trace("obj_sess kaldt igen...")
                     time.sleep(1)
                     obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002") #Fortsæt til manuel bogføring eller sletning
                     time.sleep(1)
@@ -539,6 +543,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                                     
                 if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                     reset.kill_edge(orchestrator_connection)
+                    time.sleep(1)
+                    reset.kill_webview2(orchestrator_connection)
                     time.sleep(1)
                     obj_sess = get_client_func.get_client()
                     obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
