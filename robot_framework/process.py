@@ -603,10 +603,10 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                     globals.new_element_no += 1
             
         try:
-            time.sleep(1)
-            reset.kill_webview2(orchestrator_connection)
-            time.sleep(2)
-            reset.kill_edge(orchestrator_connection)
+            #time.sleep(1)
+            #reset.kill_webview2(orchestrator_connection)
+            #time.sleep(2)
+            #reset.kill_edge(orchestrator_connection)
             time.sleep(1)
             obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select() #Opdater
             orchestrator_connection.log_trace(str(globals.item_count)+" Opdatering af side")
