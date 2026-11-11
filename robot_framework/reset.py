@@ -61,6 +61,7 @@ def kill_webview2(orchestrator_connection: OrchestratorConnection) -> None:
 
     subprocess.call("taskkill /F /IM Msedgewebview2.exe /T", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=True)
     orchestrator_connection.log_trace(str(globals.item_count)+" WebView2 er lukket")
+    print(str(globals.item_count)+" WebView2 er lukket")
     
 
 def open_all(orchestrator_connection: OrchestratorConnection) -> None:
@@ -102,7 +103,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     
     #Ved PROD bruges denne linje:
-    globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
+    #globals.aktuel_bogholderbakke = json.loads(orchestrator_connection.process_arguments)['aktuel_bogholderbakke']
 
     #Ved TEST lokalt bruges nedenstående parametre...
     #globals.aktuel_bogholderbakke = "Fakturahandl.07: Ændre faktura"
@@ -110,7 +111,7 @@ def open_all(orchestrator_connection: OrchestratorConnection) -> None:
     #globals.aktuel_bogholderbakke = "Kombit Fakturaer"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.03: Kontroller dob fakt"
     #globals.aktuel_bogholderbakke = "Fakturabeslut.04: Nul beløb i faktura"
-    #globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
+    globals.aktuel_bogholderbakke = "Fakturabeslut.08: Håndter afvist faktura"
     #globals.aktuel_bogholderbakke = "FakturaKontrolCenter"
     
     match globals.aktuel_bogholderbakke:

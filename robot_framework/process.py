@@ -27,7 +27,7 @@ import pyautogui
 import win32com.client
 #import new_password
 from openpyxl import load_workbook, workbook
-from pywinauto.application import Application
+from pywinauto import Application
 from pywinauto.keyboard import send_keys
 from pywinauto import mouse
 import win32clipboard
@@ -138,9 +138,7 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
             #obj_sess.findById("wnd[0]/mbar/menu[3]/menu[6]").select()
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectedRows = "0"
             obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
-            
             time.sleep(1)
-            #orchestrator_connection.log_trace(str(globals.item_count)+" Opdaterer siden er klikket...")
             try:
                 grid = wait_for_element(
                     obj_sess,
@@ -175,9 +173,8 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").selectionChanged
                 time.sleep(1)
                 orchestrator_connection.log_trace(str(globals.item_count)+" Er valgt, men endnu ikke åbnet")
-                press_sap_button(obj_sess, "APRO", timeout=20)
+                press_sap_button(obj_sess, "APRO", timeout=20) #for 'Haandter afvist' åbnes WebViev
                 
-                #obj_sess.findById("wnd[0]/usr/cntlSINWP_CONTAINER/shellcont/shell/shellcont[1]/shell/shellcont[0]/shell").pressToolbarButton("APRO") #for 'Haandter afvist' åbnes WebViev
                 time.sleep(1)
                 
                 
@@ -387,6 +384,14 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 if queue_element.queue_name=="Bogholderbakke_HåndterAfvist":
                     reset.kill_edge(orchestrator_connection)
                     time.sleep(1)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Bilagsvisning time1: "+datetime.datetime.now().strftime("%M-%S"))
+                    app = Application(backend="uia").connect(
+                        title_re="Bilagsvisning",
+                        timeout=60
+                    )
+                    window = app.window(title_re="Bilagsvisning")
+                    window.set_focus()
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Bilagsvisning time2: "+datetime.datetime.now().strftime("%M-%S"))
                     reset.kill_webview2(orchestrator_connection) #Hvis aktiv åbner og lukker Teams efter hvert kø-element
                     time.sleep(1)
                     obj_sess = get_client_func.get_client()
