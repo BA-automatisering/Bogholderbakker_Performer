@@ -550,7 +550,15 @@ def process(orchestrator_connection: OrchestratorConnection, queue_element: Queu
                 if queue_element.queue_name=="Bogholderbakke_KombitFaktura":
                     reset.kill_edge(orchestrator_connection)
                     time.sleep(1)
-                    reset.kill_webview2(orchestrator_connection)
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Bilagsvisning time1: "+datetime.datetime.now().strftime("%M-%S"))
+                    app = Application(backend="uia").connect(
+                        title_re="Bilagsvisning",
+                        timeout=60
+                    )
+                    window = app.window(title_re="Bilagsvisning")
+                    window.set_focus()
+                    orchestrator_connection.log_trace(str(globals.item_count)+" Bilagsvisning time2: "+datetime.datetime.now().strftime("%M-%S"))
+                    reset.kill_webview2(orchestrator_connection) #Hvis aktiv åbner og lukker Teams efter hvert kø-element
                     time.sleep(1)
                     obj_sess = get_client_func.get_client()
                     obj_sess.findById("wnd[0]/usr/cntlSWU20300CONTAINER/shellcont/shell").sapEvent("","","SAPEVENT:DECI:0002")
